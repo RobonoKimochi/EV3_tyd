@@ -19,12 +19,12 @@
 
 /* デバッグモード */
 /* 0:通常走行モード	1:デバッグ走行モード */
-#define USE_DEBUG_MODE		(0)
+#define USE_DEBUG_MODE		(1)
 
 
 /* リモコン操作設定 */
 /* 0:リモコン操作なし	1:リモコン操作あり */
-#define USE_REMOTE_CONTROL_MODE	(0)
+#define USE_REMOTE_CONTROL_MODE	(1)
 
 
 /* ロガー設定 */

@@ -146,7 +146,8 @@ void main_task(intptr_t unused)
 
         tail_control(TAIL_ANGLE_DRIVE); /* バランス走行用角度に制御 */
 
-        if (sonar_alert() == 1) /* 障害物検知 */
+//        if (sonar_alert() == 1) /* 障害物検知 */
+        if(0)
         {
             forward = turn = 0; /* 障害物を検知したら停止 */
 
@@ -154,14 +155,23 @@ void main_task(intptr_t unused)
         }
         else
         {
-            forward = 30; /* 前進命令 */
 
-			s_err = colorSensor->getBrightness() - (LIGHT_WHITE/ 2 );
+			s_err = colorSensor->getBrightness() ;
 			
-			
-			turn = s_err * PGAIN + (s_err - s_pre_err) * DGAIN;
-			
-			s_pre_err = s_err;
+        	if (s_err <= 25)
+           	{
+               	turn =  -10; /* 左旋回命令 */
+           		forward = 10;
+           	}
+           	else if(s_err >= 60)
+           	{
+               	turn = 10; /* 右旋回命令 */
+           		forward = 10;
+       		}
+			else
+			{
+				forward = 20;
+			}
 
         }
 

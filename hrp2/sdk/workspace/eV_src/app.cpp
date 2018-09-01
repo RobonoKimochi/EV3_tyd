@@ -97,7 +97,6 @@ static void user_system_create() {
 	gSound 			= Sound::getInstance();
 	gClock			 = new Clock();
 
-
     // 初期化完了通知
     ev3_led_set_color(LED_ORANGE);
 	gSound->ready();
@@ -153,18 +152,6 @@ void main_task(intptr_t unused) {
 
 	// UIタスク開始
 	act_tsk(UI_TASK);
-
-    /* スタート待機 */
-    while(1)
-    {
-        if (gTouchSensor.isPressed())
-        {
-//            break; /* タッチセンサが押された */
-			gBalancingWalker->setCommand(20,0);
-        }
-
-        gClock->sleep(10);
-    }
 
 
     slp_tsk();  // バックボタンが押されるまで待つ
