@@ -43,11 +43,13 @@ void LineTracer::run() {
     mSection = mRunManager->determineCourse();
 
 #if USE_DEBUG_MODE
+
 #if USE_CONSTANT_PID
     /* デバッグ用処理 */
     /* 走行区間によるPIDの切り替えを無効化 */
     mSection = RunManager::STRAIGHT_ZONE;
 #endif
+
 #endif
 
         int direction = calcDirection();
@@ -70,7 +72,8 @@ void LineTracer::run() {
 #if LOOKUPGATE_TEST_MODE
     mIsFinished = true;
 #endif
-#elif
+
+//#elif
     if( mSection == RunManager::STRAIGHT_ZONE){
         mPidController->setPID(1.0, 0, 10.0);
         mBalancingWalker->setCommand(100, direction);	//■■速度は暫定
