@@ -1,11 +1,11 @@
 /**
  ******************************************************************************
- **	ãƒ•ã‚¡ã‚¤ãƒ«å : balancer_private.h
+ **	ƒtƒ@ƒCƒ‹–¼ : balancer_private.h
  **
- ** ãƒ¢ãƒ‡ãƒ«é–¢é€£æƒ…å ±:
- **   ãƒ¢ãƒ‡ãƒ«å   : balancer.mdl
- **   ãƒãƒ¼ã‚¸ãƒ§ãƒ³ : 1.893
- **   å±¥æ­´       : y_yama - Tue Sep 25 11:37:09 2007
+ ** ƒ‚ƒfƒ‹ŠÖ˜Aî•ñ:
+ **   ƒ‚ƒfƒ‹–¼   : balancer.mdl
+ **   ƒo[ƒWƒ‡ƒ“ : 1.893
+ **   —š—ğ       : y_yama - Tue Sep 25 11:37:09 2007
  **                takashic - Sun Sep 28 17:50:53 2008
  **
  ** Copyright (c) 2009-2016 MathWorks, Inc.
@@ -18,32 +18,32 @@ extern float A_D;                   /* Variable: A_D
                                         * Referenced by blocks:
                                         * '<S11>/Constant1'
                                         * '<S11>/Gain2'
-                                        * ãƒ­ãƒ¼ãƒ‘ã‚¹ãƒ•ã‚£ãƒ«ã‚¿ä¿‚æ•°(å·¦å³è»Šè¼ªã®å¹³å‡å›è»¢è§’åº¦ç”¨)
+                                        * ƒ[ƒpƒXƒtƒBƒ‹ƒ^ŒW”(¶‰EÔ—Ö‚Ì•½‹Ï‰ñ“]Šp“x—p)
                                         */
 extern float A_R;                   /* Variable: A_R
                                         * Referenced by blocks:
                                         * '<S8>/Constant1'
                                         * '<S8>/Gain2'
-                                        * ãƒ­ãƒ¼ãƒ‘ã‚¹ãƒ•ã‚£ãƒ«ã‚¿ä¿‚æ•°(å·¦å³è»Šè¼ªã®ç›®æ¨™å¹³å‡å›è»¢è§’åº¦ç”¨)
+                                        * ƒ[ƒpƒXƒtƒBƒ‹ƒ^ŒW”(¶‰EÔ—Ö‚Ì–Ú•W•½‹Ï‰ñ“]Šp“x—p)
                                         */
 extern float K_F[4];                /* Variable: K_F
                                         * '<S1>/FeedbackGain'
-                                        * ã‚µãƒ¼ãƒœåˆ¶å¾¡ç”¨çŠ¶æ…‹ãƒ•ã‚£ãƒ¼ãƒ‰ãƒãƒƒã‚¯ä¿‚æ•°
+                                        * ƒT[ƒ{§Œä—pó‘ÔƒtƒB[ƒhƒoƒbƒNŒW”
                                         */
 extern float K_I;                   /* Variable: K_I
                                         * '<S1>/IntegralGain'
-                                        * ã‚µãƒ¼ãƒœåˆ¶å¾¡ç”¨ç©åˆ†ä¿‚æ•°
+                                        * ƒT[ƒ{§Œä—pÏ•ªŒW”
                                         */
 extern float K_PHIDOT;              /* Variable: K_PHIDOT
                                         * '<S3>/Gain2'
-                                        * è»Šä½“ã®ç›®æ¨™å¹³é¢å›è»¢é€Ÿåº¦(dÏ†/dt)ä¿‚æ•°
+                                        * Ô‘Ì‚Ì–Ú•W•½–Ê‰ñ“]‘¬“x(dƒÓ/dt)ŒW”
                                         */
 extern float K_THETADOT;            /* Variable: K_THETADOT
                                         * '<S3>/Gain1'
-                                        * å·¦å³è»Šè¼ªã®å¹³å‡å›è»¢é€Ÿåº¦(dÎ¸/dt)ä¿‚æ•°
+                                        * ¶‰EÔ—Ö‚Ì•½‹Ï‰ñ“]‘¬“x(dƒÆ/dt)ŒW”
                                         */
-extern const float BATTERY_GAIN;    /* PWMå‡ºåŠ›ç®—å‡ºç”¨ãƒãƒƒãƒ†ãƒªé›»åœ§è£œæ­£ä¿‚æ•° */
-extern const float BATTERY_OFFSET;  /* PWMå‡ºåŠ›ç®—å‡ºç”¨ãƒãƒƒãƒ†ãƒªé›»åœ§è£œæ­£ã‚ªãƒ•ã‚»ãƒƒãƒˆ */
+extern const float BATTERY_GAIN;    /* PWMo—ÍZo—pƒoƒbƒeƒŠ“dˆ³•â³ŒW” */
+extern const float BATTERY_OFFSET;  /* PWMo—ÍZo—pƒoƒbƒeƒŠ“dˆ³•â³ƒIƒtƒZƒbƒg */
 
 /*======================== TOOL VERSION INFORMATION ==========================*
  * MATLAB 7.7 (R2008b)30-Jun-2008                                             *

@@ -31,7 +31,14 @@ private:
 		THRU_PRESTOP,
 		THRU_THRU,
 		THRU_FORWARD,
+		THRU_SPDDOWN,
 		THRU_FINISH
+	};
+	
+	enum BackState
+	{
+		BACK_BACK,
+		BACK_SPDDOWN
 	};
 	
 	LookUpState mLookUpState;
@@ -69,7 +76,11 @@ private:
 	int ZeroCount;
 	
 	char mThruGateSts;
-	char mBackGateSts;
+	char mBackGateSts;	// 後退ステートマシン
+	
+#define BACK_STRAIGHT
+//#undef BACK_STRAIGHT
+
 #define LOOKUPGATEDOUBLE
 //#undef LOOKUPGATEDOUBLE
 

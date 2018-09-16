@@ -224,8 +224,7 @@ void LineTracerWithStarter::execWalking() {
 
             mState = STAIRS;
 #elif RUN_COURSE == RUN_LEFT_COURSE
-        if( (mLineTracer->isFinished() == true) && (mMeasureDistance->DetectGate() == true ))
-        {
+        if( mLineTracer->isFinished() == true && mMeasureDistance->DetectGate() == true){
             mState = LOOKUPGATE;
 #endif
 		}
@@ -241,7 +240,7 @@ void LineTracerWithStarter::execLookUpGate() {
 	} else {
 		LookUpCompFlag =mLookUpGate->RunLookUpGate();
 		if(LookUpCompFlag == true) {
-//			 mState = GARAGE;
+			// mState = GARAGE;
             mState = GRAY_DETECT;
 		}
 	}
