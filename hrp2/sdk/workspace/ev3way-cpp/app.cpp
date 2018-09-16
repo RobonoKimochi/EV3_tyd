@@ -45,16 +45,10 @@ static FILE     *bt = NULL;      /* Bluetoothファイルハンドル */
 //#define PASS_KEY        "1234" /* パスキー    hrp2/target/ev3.h BLUETOOTH_PIN_CODEで設定 */
 #define CMD_START         '1'    /* リモートスタートコマンド */
 
-#define SIGN_LEFT	(1)
-#define SIGN_RIGHT	(-1)
-
 /* LCDフォントサイズ */
 #define CALIB_FONT (EV3_FONT_SMALL)
 #define CALIB_FONT_WIDTH (6/*TODO: magic number*/)
 #define CALIB_FONT_HEIGHT (8/*TODO: magic number*/)
-
-#define PGAIN	(5)
-#define DGAIN	(1)
 
 /* 関数プロトタイプ宣言 */
 static int32_t sonar_alert(void);
@@ -76,9 +70,6 @@ void main_task(intptr_t unused)
     int8_t forward;      /* 前後進命令 */
     int8_t turn;         /* 旋回命令 */
     int8_t pwm_L, pwm_R; /* 左右モータPWM出力 */
-    int32_t pre_c;
-    int8_t sign = 1;
-    int32_t s_err,s_pre_err;
 
     /* 各オブジェクトを生成・初期化する */
     touchSensor = new TouchSensor(PORT_1);
@@ -146,33 +137,21 @@ void main_task(intptr_t unused)
 
         tail_control(TAIL_ANGLE_DRIVE); /* バランス走行用角度に制御 */
 
-//        if (sonar_alert() == 1) /* 障害物検知 */
-        if(0)
+        if (sonar_alert() == 1) /* 障害物検知 */
         {
             forward = turn = 0; /* 障害物を検知したら停止 */
-
-            s_pre_err = 0;
         }
         else
         {
-
-			s_err = colorSensor->getBrightness() ;
-			
-        	if (s_err <= 25)
-           	{
-               	turn =  -10; /* 左旋回命令 */
-           		forward = 10;
-           	}
-           	else if(s_err >= 60)
-           	{
-               	turn = 10; /* 右旋回命令 */
-           		forward = 10;
-       		}
-			else
-			{
-				forward = 20;
-			}
-
+            forward = 30; /* 前進命令 */
+            if (colorSensor->getBrightness() >= (LIGHT_WHITE + LIGHT_BLACK)/2)
+            {
+                turn =  20; /* 左旋回命令 */
+            }
+            else
+            {
+                turn = -20; /* 右旋回命令 */
+            }
         }
 
         /* 倒立振子制御API に渡すパラメータを取得する */

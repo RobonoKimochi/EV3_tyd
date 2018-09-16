@@ -12,6 +12,8 @@
 #include "platform_interface_layer.h"
 
 
+ID _ev3api_id_EV3_CYC_TRACER;
+
 ID _ev3api_id_EV3_CYC_ODMETRY;
 
 ID _ev3api_id_EV3_CYC_TAILMOTOR;
@@ -23,6 +25,15 @@ ID _ev3api_id_EV3_CYC_REMOTE;
 void _initialize_ev3api_cyc() {
 	ER_ID ercd;
 	T_CCYC pk_ccyc;
+
+	pk_ccyc.cycatr = TA_NULL;
+	pk_ccyc.exinf = 0;
+	pk_ccyc.cychdr = ev3_cyc_tracer;
+	pk_ccyc.cyctim = 4;
+	pk_ccyc.cycphs = 1;
+	ercd = _ev3_acre_cyc(&pk_ccyc);
+	assert(ercd > 0);
+	_ev3api_id_EV3_CYC_TRACER = ercd;
 
 	pk_ccyc.cycatr = TA_NULL;
 	pk_ccyc.exinf = 2;
