@@ -3,19 +3,10 @@
 #
 
 #
-# Functions
-#
-get_relpath = $(shell perl -MFile::Spec -e "print File::Spec->abs2rel(q($1),q($2))")
-get_cygwinpath = $(shell cygpath -u $1)
-
-# PROJECTHOME
-PROJECTHOME=$(call get_cygwinpath, $(PWD))
-
-#
 # Include configurations of EV3RT SDK
 #
 SDKDIR = ..
-WSPDIR = $(basename $(PROJECTHOME))
+WSPDIR = $(basename $(PWD))
 include $(SDKDIR)/Makefile.sdk.conf
 
 # Configuration
@@ -23,12 +14,17 @@ SRCLANG := c
 KERNEL := hrp2
 
 #
+# Functions
+#
+get_relpath = $(shell perl -MFile::Spec -e "print File::Spec->abs2rel(q($1),q($2))")
+
+#
 # Paths
 #
-KERNELDIR    := $(PROJECTHOME)/$(SDKDIR)/$(EV3RT_BASE_DIR)
-OBJDIR       := $(PROJECTHOME)/$(SDKDIR)/$(EV3RT_PRJ_OBJ_DIR)
-LIBKERNELDIR := $(PROJECTHOME)/$(SDKDIR)/$(EV3RT_LIBKERNEL_DIR)
-TARGETDIR    := $(PROJECTHOME)/$(KERNELDIR)/target/ev3_gcc
+KERNELDIR    := $(PWD)/$(SDKDIR)/$(EV3RT_BASE_DIR)
+OBJDIR       := $(PWD)/$(SDKDIR)/$(EV3RT_PRJ_OBJ_DIR)
+LIBKERNELDIR := $(PWD)/$(SDKDIR)/$(EV3RT_LIBKERNEL_DIR)
+TARGETDIR    := $(PWD)/$(KERNELDIR)/target/ev3_gcc
 
 # Object files
 OBJFILENAME := $(KERNEL)
@@ -45,11 +41,11 @@ OBJBINARY := $(OBJDIR)/$(KERNEL).bin
 # $(MKFILE_DIR):      Absolute path of the folder holding Makefile
 #
 ifdef img
-APPLDIR := $(PROJECTHOME)/$(img)
+APPLDIR := $(PWD)/$(img)
 MKFILENAME := Makefile.img
 endif
 ifdef app
-APPLDIR := $(PROJECTHOME)/$(app)
+APPLDIR := $(PWD)/$(app)
 MKFILENAME := Makefile.app
 endif
 MKFILE_DIR := $(APPLDIR)
@@ -57,8 +53,7 @@ ifeq (,$(wildcard $(mkfile_dir)/$(MKFILENAME)))
 MKFILE_DIR := $(SDKDIR)/common
 endif
 
-#APPLXDIR := sdk/workspace/$(app)	# ADD
-APPLXDIR := ./../../sdk/workspace/$(app)	# ADD
+
 
 # Target for an application (static)
 #
@@ -79,9 +74,9 @@ endif
 	    $(OBJFILENAME) $(call get_relpath,$(OBJBINARY),$(OBJDIR))
 	@mkimage -A arm -O linux -T kernel -C none -a 0xc0008000 -e 0xc0008000 \
         -n "TOPPERS/$(KERNEL) Kernel (EV3)" \
-		-d $(call get_relpath,$(OBJBINARY),$(PROJECTHOME)) uImage
+		-d $(call get_relpath,$(OBJBINARY),$(PWD)) uImage
 	@chmod +x uImage
-	@cp $(OBJDIR)/$(OBJFILENAME) $(PROJECTHOME)
+	@cp $(OBJDIR)/$(OBJFILENAME) $(PWD)
 
 $(LIBKERNELDIR)/libkernel.a: prepare-obj-folder
 	@cd $(OBJDIR) && \
@@ -102,13 +97,43 @@ app: $(APPLDIR) prepare-obj-folder
 	@cd $(OBJDIR) && \
 	make module_cfg.h && \
 	make -j8 && \
-	cp app $(PROJECTHOME)/app # && cp app $(PROJECTHOME)/app-$(subst /,,$(app))
+	cp app $(PWD)/app # && cp app $(PWD)/app-$(subst /,,$(app))
 
 endif
 
 usage:
 	@echo make img="<folder>"
 	@echo make app="<folder>"
+	@echo "make upload [ip=<ev3_ip_address>] [from=<local_file_name>] [to=<remote_file_name>]"
+	@echo "make uploadimg [ip=<ev3_ip_address>] [from=<local_image_path>]"
+
+# TODO: check file name carefully
+ifndef ip # Default IP
+ip := 10.0.10.1
+endif
+ifndef from # Default local application (or uImage) file name
+from := app
+uploadimg: from := uImage
+endif
+ifndef to
+to := $(from)
+endif
+upload:
+	@echo = "Upload user application file"
+	@echo "  BT PAN IP: $(ip)"
+	@echo "  FILE NAME: (Local) \"$(from)\" -> (Remote) \"$(to)\""
+	@echo = "Execute cURL:"
+	@curl -f --noproxy "*" -H "Content-Type: ev3rt/app" -H 'Content-Disposition: inline; filename="$(to)"' --data-binary @$(from) http://$(ip)/upload > /dev/null
+	@echo = Application has been successfully uploaded.
+
+uploadimg:
+	@echo = "Upload uImage file"
+	@echo "  BT PAN IP: $(ip)"
+	@echo "  FILE NAME: (Local) \"$(from)\" -> (Remote) \"/uImage\""
+	@echo = "Execute cURL:"
+	@curl -f --noproxy "*" -H "Content-Type: ev3rt/img" --data-binary @$(from) http://$(ip)/upload > /dev/null
+	@echo = uImage has been successfully uploaded.
+
 
 clean:
 	rm -rf $(OBJDIR)
@@ -128,8 +153,8 @@ prepare-obj-folder: clean
 	@mkdir -p $(OBJDIR)
 	cd $(OBJDIR) && \
 	$(KERNELDIR)/configure -T ev3_gcc -A app \
-		-a $(call get_relpath,$(APPLXDIR),$(OBJDIR)) \
-		-t $(call get_relpath,$(APPLXDIR),$(OBJDIR)) \
+		-a $(call get_relpath,$(APPLDIR),$(OBJDIR)) \
+		-t $(call get_relpath,$(APPLDIR),$(OBJDIR)) \
 		-D $(call get_relpath,$(KERNELDIR),$(OBJDIR)) \
 		-L $(call get_relpath,$(LIBKERNELDIR),$(OBJDIR)) \
 		-l $(SRCLANG) \
