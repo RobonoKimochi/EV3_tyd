@@ -24,7 +24,7 @@
 
 /* リモコン操作設定 */
 /* 0:リモコン操作なし	1:リモコン操作あり */
-#define USE_REMOTE_CONTROL_MODE	(1)
+#define USE_REMOTE_CONTROL_MODE	(0)
 
 
 /* ロガー設定 */
