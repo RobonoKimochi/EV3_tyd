@@ -26,6 +26,7 @@
 #include "BalancingWalker.h"
 #include "Sound.h"
 
+
 #include "Clock.h"
 
 // デストラクタ問題の回避
