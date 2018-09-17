@@ -58,11 +58,11 @@ void LineTracerWithStarter::run() {
     case UNDEFINED:
         execUndefined();
         break;
-    case CALIBRATION_TAIL:
-        execCalibrationTail();
-        break;
     case CALIBRATION_GYRO:
         execCalibrationGyro();
+        break;
+   case CALIBRATION_TAIL:
+        execCalibrationTail();
         break;
     case CALIBRATION_BLACK:
         execCalibrationBlack();
@@ -111,7 +111,7 @@ void LineTracerWithStarter::execUndefined() {
 #endif
 	mTailMotor->init(0);
     mCalibration->init();
-	mState = CALIBRATION_TAIL;
+	mState = CALIBRATION_GYRO;
 }
 
 /**
@@ -137,7 +137,7 @@ void LineTracerWithStarter::execCalibrationTail() {
 	}
 
 	if(TimeCount > 100) {
-		mState = CALIBRATION_GYRO;
+		mState = CALIBRATION_BLACK;
         mSound->ok();
 		mTailMotor->setAngle(94);	// 開始待ち時尻尾91°
 #if 1
@@ -154,7 +154,7 @@ void LineTracerWithStarter::execCalibrationTail() {
 void LineTracerWithStarter::execCalibrationGyro() {
     if (mCalibration->calibrateGyro(mStarter->isPushed()) == true) {
 
-        mState = CALIBRATION_BLACK;
+        mState = CALIBRATION_TAIL;
         mSound->ok();
         // mState = WAITING_FOR_START; // きゃりぶれ飛ばし
     }
