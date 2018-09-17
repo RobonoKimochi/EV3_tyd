@@ -39,7 +39,7 @@ using ev3api::Motor;
 using ev3api::Clock;
 
 // Device objects
-// オブジェクトを静的に確保する
+// オブジェクトを静的に確保する。
 //ColorSensor gColorSensor(PORT_3);
 //GyroSensor  gGyroSensor(PORT_4);
 //Motor       gLeftWheel(PORT_C);
