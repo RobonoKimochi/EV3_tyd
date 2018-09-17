@@ -43,7 +43,7 @@
 
 
 /* FORWARD値設定 */
-#define CONSTANT_FORWARD_VAL	(70)
+#define CONSTANT_FORWARD_VAL	(60)
 
 /* FORWARD値設定 */
 #define SOUND_VOL				(4)

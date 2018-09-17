@@ -19,7 +19,7 @@
 
 /* デバッグモード */
 /* 0:通常走行モード	1:デバッグ走行モード */
-#define USE_DEBUG_MODE		(0)
+#define USE_DEBUG_MODE		(1)
 
 
 /* リモコン操作設定 */
@@ -43,7 +43,7 @@
 
 
 /* FORWARD値設定 */
-#define CONSTANT_FORWARD_VAL	(60)
+#define CONSTANT_FORWARD_VAL	(100)
 
 /* FORWARD値設定 */
 #define SOUND_VOL				(4)

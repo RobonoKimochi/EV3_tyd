@@ -51,8 +51,8 @@ void Balancer::update(int angle, int rwEnc, int lwEnc, int battery) {
         static_cast<float>(mTurn),
         static_cast<float>(angle),
         static_cast<float>(mOffset),
-        static_cast<float>(lwEnc),
-        static_cast<float>(rwEnc),
+        static_cast<float>(cancelBacklash(mLeftPwm, lwEnc)),
+        static_cast<float>(cancelBacklash(mRightPwm, rwEnc)),
         static_cast<float>(battery),
         &mLeftPwm,
         &mRightPwm);
@@ -89,3 +89,17 @@ int8_t Balancer::getForward() {
 int8_t Balancer::getTurn() {
     return mTurn;
 }
+
+/**
+ * 直近のPWM値に応じてエンコーダー値にバックラッシュ分の値を追加する
+ * @param pwm モーターPWM値 ※前回の出力値
+ * @param enc モーターエンコーダー値
+ * @return バックラッシュを追加したモーターエンコーダー値
+ */
+int Balancer::cancelBacklash(int8_t pwm, int enc) {
+    const int kBacklashHalf = 4;  // バックラッシュの半分[deg]
+
+    if (pwm == 0) return enc;
+    return pwm > 0 ? enc - kBacklashHalf : enc + kBacklashHalf;
+}
+

@@ -19,24 +19,24 @@
  LineTracerWithStarter::LineTracerWithStarter(LineTracer* lineTracer,
                                               const Starter* starter,
                                               Calibration* calibration,
- 											 Remote*     Remote,
- 											 LookUpGate*     LookUpGate,
- 											 MeasureDistance *measureDistance,
- 											 Garage*         Garage,
-                                              BalancingWalker* balancingWalker,
-                                              Run_Stairs*       run_Stairs
+// 											 Remote*     Remote,
+ //											 LookUpGate*     LookUpGate,
+// 											 MeasureDistance *measureDistance,
+// 											 Garage*         Garage,
+                                              BalancingWalker* balancingWalker
+//                                              Run_Stairs*       run_Stairs
  											 )
     : TailInit(false),
       LookUpCompFlag(false),
       mLineTracer(lineTracer),
       mStarter(starter),
       mCalibration(calibration),
-      mRemote(Remote),
-      mLookUpGate(LookUpGate),
-      mMeasureDistance(measureDistance),
-      mGarage(Garage),
+//      mRemote(Remote),
+//      mLookUpGate(LookUpGate),
+//      mMeasureDistance(measureDistance),
+//      mGarage(Garage),
       mBalancingWalker(balancingWalker),
-      mRun_Stairs(run_Stairs),
+//      mRun_Stairs(run_Stairs),
       mState(UNDEFINED),
       TimeCount(0),
       mStartSignal(false)
@@ -77,19 +77,19 @@ void LineTracerWithStarter::run() {
         execWalking();
         break;
     case REMOTE:
-    	remote();
+//    	remote();
     	break;
     case LOOKUPGATE:
-    	execLookUpGate();
+//    	execLookUpGate();
     	break;
     case GRAY_DETECT:
-        execGrayDetect();
+//        execGrayDetect();
         break;
     case STAIRS:
-        execStairs() ;
+//        execStairs() ;
         break;
     case GARAGE:
-    	execGarage();
+//    	execGarage();
     	break;
     default:
         break;
@@ -215,9 +215,9 @@ void LineTracerWithStarter::execWaitingForStart() {
  * 走行中状態の処理
  */
 void LineTracerWithStarter::execWalking() {
-	if(mRemote->RemoteState() == true) {
-		mState = REMOTE;
-	} else {
+//	if(mRemote->RemoteState() == true) {
+//		mState = REMOTE;
+//	} else {
         mLineTracer->run();
 #if RUN_COURSE == RUN_RIGHT_COURSE
         if( mLineTracer->isFinished() == true){
@@ -229,8 +229,10 @@ void LineTracerWithStarter::execWalking() {
             mState = LOOKUPGATE;
 #endif
 		}
-	}
+//	}
 }
+
+#if 0
 
 /**
  * ルックアップゲート状態の処理
@@ -241,8 +243,8 @@ void LineTracerWithStarter::execLookUpGate() {
 	} else {
 		LookUpCompFlag =mLookUpGate->RunLookUpGate();
 		if(LookUpCompFlag == true) {
-			 mState = GARAGE;
-//            mState = GRAY_DETECT;
+//			 mState = GARAGE;
+            mState = GRAY_DETECT;
 		}
 	}
 }
@@ -293,3 +295,6 @@ void LineTracerWithStarter::remote() {
 		mRemote->RemoteControl();
 	}
 }
+
+#endif
+

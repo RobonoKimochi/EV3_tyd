@@ -49,7 +49,6 @@ void LineTracer::run() {
     /* 走行区間によるPIDの切り替えを無効化 */
     mSection = RunManager::STRAIGHT_ZONE;
 #endif
-
 #endif
 
         int direction = calcDirection();
@@ -68,12 +67,10 @@ void LineTracer::run() {
 #if USE_GRAY_THRESH
     mLineMonitor->LineThresholdGray();
 #endif
-
 #if LOOKUPGATE_TEST_MODE
     mIsFinished = true;
 #endif
 
-//#elif
 #else
     if( mSection == RunManager::STRAIGHT_ZONE){
         mPidController->setPID(1.0, 0, 10.0);
