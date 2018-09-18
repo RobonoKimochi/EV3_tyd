@@ -9,7 +9,7 @@ UI::UI():
 {
     OpenSerialPort();
     if( isConnected() == true){
-        putString("@ BlueTooth is connected!\n\r");
+//        putString("@ BlueTooth is connected!\n\r");
     } else{
         // mBlueTooth->putString("conect dekite naiyo\n\r");
     }

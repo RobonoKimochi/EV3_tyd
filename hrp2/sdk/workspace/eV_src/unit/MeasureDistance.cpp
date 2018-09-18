@@ -1,9 +1,4 @@
 #include "MeasureDistance.h"
-
-
-#define GATE_DETECT_OK_COUNT	(8)		// ゲート接近確定時間
-#define THROUGH_DETECT_COUNT	(6000 / 40)	// 障害物非検知6secでゲート通過確定
-
 /**
  * コンストラクタ
  */
@@ -11,7 +6,6 @@
     //  :  mBT(fp)
 :alert(false),
 FindGate(false),
-ThroughGate(false),
 counter(0),
 distance(0),
 AlertCounter(0),
@@ -49,24 +43,11 @@ bool MeasureDistance::DetectGate(){
         	}
         	counter = 0;
     	}
-    	
-#if 0
 	if(AlertCounter > 10) {
 		FindGate = true;
 	} else {
 		FindGate = false;
 	}
-#else
-
-	// 接近して、かつ距離が近づいたのを1度でも検知したら確定
-	if( (AlertCounter >= GATE_DETECT_OK_COUNT) && (distance >= 0) && (distance < GateConfirmDistance) )
-    {
-		FindGate = true;
-	} else {
-		FindGate = false;
-	}
-#endif
-
 	return (FindGate);
 }
 
@@ -102,13 +83,4 @@ bool MeasureDistance::ThroughtGate(){
 		FindGate = false;
 	}
 	return (FindGate);
-}
-
-void MeasureDistance::ThroughInit()
-{
-	counter = 0;
-	ThroughtCounter = 0;		// カウンタをリセット
-   	alert = false; /* 障害物無し */
-	ThroughGate = false;
-	
 }

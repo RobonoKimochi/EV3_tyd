@@ -1,9 +1,9 @@
 /******************************************************************************
- *  LineTracerWithStarter.cpp (for LEGO Mindstorms EV3)
- *  Created on: 2015/01/26
- *  Implementation of the Class LineTracerWithStarter
- *  Author: Kazuhiro Kawachi
- *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
+ *	LineTracerWithStarter.cpp (for LEGO Mindstorms EV3)
+ *	Created on: 2015/01/26
+ *	Implementation of the Class LineTracerWithStarter
+ *	Author: Kazuhiro Kawachi
+ *	Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
 
 #include "LineTracerWithStarter.h"
@@ -11,36 +11,40 @@
 #include "MotorDriver.h"
 #include "app.h"
 #include "TailMotor.h"
+#include "Odmetry.h"
+#include "Seesaw.h"
+
 /**
  * コンストラクタ
  * @param lineTracer ライントレーサ
- * @param starter    スタータ
+ * @param starter	 スタータ
  */
- LineTracerWithStarter::LineTracerWithStarter(LineTracer* lineTracer,
-                                              const Starter* starter,
-                                              Calibration* calibration,
- 											 Remote*     Remote,
- 											 LookUpGate*     LookUpGate,
- 											 MeasureDistance *measureDistance,
- 											 Garage*         Garage,
-                                              BalancingWalker* balancingWalker,
-                                              Run_Stairs*       run_Stairs
+ LineTracerWithStarter::LineTracerWithStarter( LineTracer*		lineTracer,
+											   const Starter*	starter,
+											   Calibration* 	calibration,
+ 											   Remote*			Remote,
+ 											   LookUpGate*		LookUpGate,
+ 											   MeasureDistance* measureDistance,
+ 											   Garage*			Garage,
+											   BalancingWalker* balancingWalker,
+											   Seesaw*			seesaw
  											 )
-    : TailInit(false),
-      LookUpCompFlag(false),
-      mLineTracer(lineTracer),
-      mStarter(starter),
-      mCalibration(calibration),
-      mRemote(Remote),
-      mLookUpGate(LookUpGate),
-      mMeasureDistance(measureDistance),
-      mGarage(Garage),
-      mBalancingWalker(balancingWalker),
-      mRun_Stairs(run_Stairs),
-      mState(UNDEFINED),
-      TimeCount(0),
-      mStartSignal(false)
-      {
+	: TailInit(false),
+	  LookUpCompFlag(false),
+	  mLineTracer(lineTracer),
+	  mStarter(starter),
+	  mCalibration(calibration),
+	  mRemote(Remote),
+	  mLookUpGate(LookUpGate),
+	  mMeasureDistance(measureDistance),
+	  mGarage(Garage),
+	  mBalancingWalker(balancingWalker),
+	  mSeesaw(seesaw),
+	  mState(UNDEFINED),
+	  TimeCount(0),
+	  mStartSignal(false)
+{
+
 }
 
 /**
@@ -52,48 +56,89 @@ LineTracerWithStarter::~LineTracerWithStarter() {
 /**
  * ライントレースする
  */
-void LineTracerWithStarter::run() {
-    debug = mState; // !!
-    switch (mState) {
-    case UNDEFINED:
-        execUndefined();
-        break;
-    case CALIBRATION_GYRO:
-        execCalibrationGyro();
-        break;
-   case CALIBRATION_TAIL:
-        execCalibrationTail();
-        break;
-    case CALIBRATION_BLACK:
-        execCalibrationBlack();
-        break;
-    case CALIBRATION_WHITE:
-        execCalibrationWhite();
-        break;
-    case WAITING_FOR_START:
-        execWaitingForStart();
-        break;
-    case WALKING:
-        execWalking();
-        break;
-    case REMOTE:
-    	remote();
-    	break;
-    case LOOKUPGATE:
-    	execLookUpGate();
-    	break;
-    case GRAY_DETECT:
-        execGrayDetect();
-        break;
-    case STAIRS:
-        execStairs() ;
-        break;
-    case GARAGE:
-    	execGarage();
-    	break;
-    default:
-        break;
-    }
+void LineTracerWithStarter::run()
+{
+	static long PrevTheat;
+	float  theat;
+
+	theat = (float)0;
+#if 0
+	theat = mOdmetry->getTheta();
+
+	if ( (PrevTheat > theat)		/* 前回位置より戻った	*/
+	   && (mState >= WALKING) )		/* 走行シーケンスをした */
+	{
+		mState = SEESAW;
+	}
+#endif
+#if 0
+	PrevTheat++;
+
+	if (PrevTheat > 20)
+	{
+		mState = SEESAW;
+	}
+#endif
+
+	switch ( mState )
+	{
+		case UNDEFINED:
+			execUndefined();
+			break;
+
+		case CALIBRATION_TAIL:
+			execCalibrationTail();
+			break;
+
+		case CALIBRATION_GYRO:
+			execCalibrationGyro();
+			break;
+
+		case CALIBRATION_BLACK:
+			execCalibrationBlack();
+			break;
+
+		case CALIBRATION_WHITE:
+			execCalibrationWhite();
+			break;
+
+		case WAITING_FOR_START:
+			execWaitingForStart();
+			break;
+
+		case WALKING:
+			execWalking();
+			break;
+/* for_Debug ここから*/
+#if 0
+		case REMOTE:
+			remote();
+			break;
+
+		case LOOKUPGATE:
+			execLookUpGate();
+			break;
+
+		case GRAY_DETECT:
+			execGrayDetect();
+			break;
+
+		case GARAGE:
+			execGarage();
+			break;
+
+#endif
+/* for_Debug ここまで */
+
+		case SEESAW:
+			execSeesaw();
+			break;
+
+		default:
+			break;
+	}
+
+	PrevTheat = theat;		/* 前回位置保持 */
 }
 
 /**
@@ -110,8 +155,8 @@ void LineTracerWithStarter::execUndefined() {
 	ev3_lcd_draw_string("RightEdge", 10, 30);
 #endif
 	mTailMotor->init(0);
-    mCalibration->init();
-	mState = CALIBRATION_GYRO;
+	mCalibration->init();
+	mState = CALIBRATION_TAIL;
 }
 
 /**
@@ -137,11 +182,11 @@ void LineTracerWithStarter::execCalibrationTail() {
 	}
 
 	if(TimeCount > 100) {
-		mState = CALIBRATION_BLACK;
-        mSound->ok();
+		mState = CALIBRATION_GYRO;
+		mSound->ok();
 		mTailMotor->setAngle(94);	// 開始待ち時尻尾91°
 #if 1
-        mState = WAITING_FOR_START; // キャリブレーション飛ばし
+		mState = WAITING_FOR_START; // きゃりぶれ飛ばし
 #endif
 	}
 
@@ -152,23 +197,23 @@ void LineTracerWithStarter::execCalibrationTail() {
  * ジャイロセンサのキャリブレーション
  */
 void LineTracerWithStarter::execCalibrationGyro() {
-    if (mCalibration->calibrateGyro(mStarter->isPushed()) == true) {
+	if (mCalibration->calibrateGyro(mStarter->isPushed()) == true) {
 
-        mState = CALIBRATION_TAIL;
-        mSound->ok();
-        // mState = WAITING_FOR_START; // きゃりぶれ飛ばし
-    }
+		mState = CALIBRATION_BLACK;
+		mSound->ok();
+		// mState = WAITING_FOR_START; // きゃりぶれ飛ばし
+	}
 }
 
 /**
  * 黒キャリブレーション
  */
 void LineTracerWithStarter::execCalibrationBlack() {
-    if (mCalibration->calibrateBlack(mStarter->isPushed()) == true) {
+	if (mCalibration->calibrateBlack(mStarter->isPushed()) == true) {
 
-        mState = CALIBRATION_WHITE;
-        mSound->ok();
-    }
+		mState = CALIBRATION_WHITE;
+		mSound->ok();
+	}
 
 }
 
@@ -176,20 +221,20 @@ void LineTracerWithStarter::execCalibrationBlack() {
  * 白キャリブレーション
  */
 void LineTracerWithStarter::execCalibrationWhite() {
-    if (mCalibration->calibrateWhite(mStarter->isPushed()) == true) {
+	if (mCalibration->calibrateWhite(mStarter->isPushed()) == true) {
 
-        mState = WAITING_FOR_START;
-    	ev3_lcd_fill_rect(0,0,EV3_LCD_WIDTH,EV3_LCD_HEIGHT,EV3_LCD_WHITE);
+		mState = WAITING_FOR_START;
+		ev3_lcd_fill_rect(0,0,EV3_LCD_WIDTH,EV3_LCD_HEIGHT,EV3_LCD_WHITE);
 #if RUN_COURSE == RUN_LEFT_COURSE
-    	ev3_lcd_draw_string("LeftCourse", 10, 30);
+		ev3_lcd_draw_string("LeftCourse", 10, 30);
 		ev3_lcd_draw_string("LeftEdge", 10, 50);
 #elif RUN_COURSE == RUN_RIGHT_COURSE
-    	ev3_lcd_draw_string("RightCourse", 10, 30);
+		ev3_lcd_draw_string("RightCourse", 10, 30);
 		ev3_lcd_draw_string("RightEdge", 10, 50);
 #endif
 		ev3_lcd_draw_string("READY", 60, 70);
-        mSound->trumpet();
-    }
+		mSound->trumpet();
+	}
 
 }
 
@@ -199,36 +244,46 @@ void LineTracerWithStarter::execCalibrationWhite() {
 void LineTracerWithStarter::execWaitingForStart() {
 
 
-    if (mStarter->isPushed()|| mStartSignal == true) {
+	if (mStarter->isPushed()|| mStartSignal == true) {
 
-        mCalibration->calibrateLineThreshold();
-
-        mTailMotor->setAngle(0);	// 開始時尻尾0°
-
-        mState = WALKING;
-        // mState =STAIRS;
-
-    }
+		mCalibration->calibrateLineThreshold();
+#if 0
+		mTailMotor->setAngle(0);	// 開始時尻尾0°
+#endif
+		mState = WALKING;
+		// mState =STAIRS;
+	}
 }
 
 /**
  * 走行中状態の処理
  */
-void LineTracerWithStarter::execWalking() {
-	if(mRemote->RemoteState() == true) {
+void LineTracerWithStarter::execWalking()
+{
+	if(mRemote->RemoteState() == true) 
+	{
 		mState = REMOTE;
-	} else {
-        mLineTracer->run();
-#if RUN_COURSE == RUN_RIGHT_COURSE
-        if( mLineTracer->isFinished() == true){
-
-            mState = STAIRS;
-#elif RUN_COURSE == RUN_LEFT_COURSE
-        if( mLineTracer->isFinished() == true && mMeasureDistance->DetectGate() == true){
-            mState = LOOKUPGATE;
+	}
+	else
+	{
+		mLineTracer->run();
+#if RUN_COURSE == RUN_LEFT_COURSE
+		if( mLineTracer->isFinished() == true)
+		{
+			mState = STAIRS;
+#elif RUN_COURSE == RUN_RIGHT_COURSE
+		if( mLineTracer->isFinished() == true && mMeasureDistance->DetectGate() == true)
+		{
+			mState = LOOKUPGATE;
 #endif
+
 		}
 	}
+#if 1/* for debug */
+	mState = SEESAW;
+#endif
+
+
 }
 
 /**
@@ -241,22 +296,21 @@ void LineTracerWithStarter::execLookUpGate() {
 		LookUpCompFlag =mLookUpGate->RunLookUpGate();
 		if(LookUpCompFlag == true) {
 			// mState = GARAGE;
-            mState = GRAY_DETECT;
+			mState = GRAY_DETECT;
 		}
 	}
 }
 /**
- * 階段制御の処理
+ * シーソー制御の処理
  */
 
-void LineTracerWithStarter::execStairs()
+void LineTracerWithStarter::execSeesaw()
 {
-	 sts = mRun_Stairs->Stairs_Main() ;
+	ev3_led_set_color(LED_GREEN); /* 通常走行は緑 */
 
-	if ( sts == OTHER_CTRL )
-	{
-		// mState = WALKING ; // 要検討
-	}
+	mSeesaw->Initialize();
+	mSeesaw->Run();
+
 }
 /**
  * 車庫入れ状態の処理
@@ -278,8 +332,8 @@ void LineTracerWithStarter::execGrayDetect() {
 		mState = REMOTE;
 	} else {
 		if( mLineTracer->detectGray() == true){
-            mState = GARAGE;
-        }
+			mState = GARAGE;
+		}
 	}
 }/**
  * リモート中の処理

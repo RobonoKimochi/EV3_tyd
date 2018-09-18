@@ -25,8 +25,6 @@ public:
     int8_t getTurn();
 
 private:
-    int cancelBacklash(int8_t pwm, int enc);
-
     int mForward;
     int mTurn;
     int mOffset;

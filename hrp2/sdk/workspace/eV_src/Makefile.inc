@@ -6,11 +6,11 @@ APPL_CXXOBJS += \
 	BalancingWalker.o \
 	LineMonitor.o \
 	BalancerCpp.o \
-    Starter.o \
-    PidController.o \
-    Calibration.o \
+	Starter.o \
+	PidController.o \
+	Calibration.o \
 	LineTracer.o \
-    LineTracerWithStarter.o \
+	LineTracerWithStarter.o \
 	RotaryEnc.o \
 	Odmetry.o \
 	Mat.o \
@@ -25,9 +25,9 @@ APPL_CXXOBJS += \
 	AttitudeControl.o \
 	TailMotor.o \
 	RunManager.o \
-    Garage.o \
+	Garage.o \
 	Sound.o \
-	Run_Stairs.o
+	Seesaw.o
 
 SRCLANG := c++
 

@@ -10,8 +10,7 @@
 class LookUpGate
 {
 public:
-	LookUpGate(AttitudeControl	*AttitudeControl, BalancingWalker* balancingwalker,MeasureDistance *measuredistance,
-	 PidController* pidController, LineMonitor* lineMonitor);
+	LookUpGate(AttitudeControl	*AttitudeControl, BalancingWalker* balancingwalker,MeasureDistance *measuredistance, PidController* pidController, LineMonitor* lineMonitor);
 	bool RunLookUpGate();
 
 	
@@ -25,21 +24,6 @@ private:
     	STAND,
 		BALANCE
     };
-    
-    enum ThruState
-    {
-		THRU_PRESTOP,
-		THRU_THRU,
-		THRU_FORWARD,
-		THRU_SPDDOWN,
-		THRU_FINISH
-	};
-	
-	enum BackState
-	{
-		BACK_BACK,
-		BACK_SPDDOWN
-	};
 	
 	LookUpState mLookUpState;
 	AttitudeControl	*mAttitudeControl;
@@ -59,9 +43,6 @@ private:
 	bool BackGateCompleteFlag;
 	bool StandCompleteFlag;
 	bool FindGateFlag;
-	
-	bool ThroughGateFlag;	// 2018_0907
-	
 	bool SecondFlag;
 	bool LookUpCompFlag;
 	int TimerCount;
@@ -74,15 +55,7 @@ private:
 	int StopCount;
 	int vib_count;
 	int ZeroCount;
-	
-	char mThruGateSts;
-	char mBackGateSts;	// 後退ステートマシン
-	
-#define BACK_STRAIGHT
-//#undef BACK_STRAIGHT
-
-#define LOOKUPGATEDOUBLE
-//#undef LOOKUPGATEDOUBLE
+//#define LOOKUPGATEDOUBLE
 
 
 };

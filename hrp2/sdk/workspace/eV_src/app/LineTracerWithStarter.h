@@ -1,9 +1,9 @@
 /******************************************************************************
- *  LineTracerWithStarter.h (for LEGO Mindstorms EV3)
- *  Created on: 2015/01/26
- *  Implementation of the Class LineTracerWithStarter
- *  Author: Kazuhiro Kawachi
- *  Copyright (c) 2015 Embedded Technology Software Design Robot Contest
+ *	LineTracerWithStarter.h (for LEGO Mindstorms EV3)
+ *	Created on: 2015/01/26
+ *	Implementation of the Class LineTracerWithStarter
+ *	Author: Kazuhiro Kawachi
+ *	Copyright (c) 2015 Embedded Technology Software Design Robot Contest
  *****************************************************************************/
 
 #ifndef EV3_APP_LINETRACERWITHSTARTER_H_
@@ -17,77 +17,83 @@
 #include "LookUpGate.h"
 #include "Garage.h"
 #include "BalancingWalker.h"
-#include "Run_Stairs.h"
+#include "Seesaw.h"
 #include "Sound.h"
+#include "Odmetry.h"
 
 class LineTracerWithStarter {
 public:
-    LineTracerWithStarter(LineTracer* lineTracer,
-               const Starter* starter,
-               Calibration* calibration,
-               Remote*		   Remote,
-               LookUpGate*     LookUpGate,
-               MeasureDistance *measureDistance,
-               Garage*         garage,
-               BalancingWalker* balancingWalker,
-               Run_Stairs*      run_Stairs
-               );
-    virtual ~LineTracerWithStarter();
+	LineTracerWithStarter( LineTracer*		lineTracer,
+						   const Starter*	starter,
+						   Calibration* 	calibration,
+						   Remote * 		 Remote,
+						   LookUpGate*		LookUpGate,
+						   MeasureDistance* measureDistance,
+						   Garage*			garage,
+						   BalancingWalker* balancingWalker,
+						   Seesaw*			seesaw
+						 );
+	virtual ~LineTracerWithStarter();
 
-    void run();
+	void run();
 
-    int debug;  // !!
+	int debug;	// !!
 	bool TailInit;
 	bool LookUpCompFlag;
 
 private:
-    enum State {
-        UNDEFINED,
-    	CALIBRATION_TAIL,
-        CALIBRATION_GYRO,
-        CALIBRATION_BLACK,
-        CALIBRATION_WHITE,
-        WAITING_FOR_START,
-        WALKING,
-    	REMOTE,
-    	LOOKUPGATE,
-        STAIRS,
-    	GARAGE,
-        GRAY_DETECT
-    };
+	enum State {
+		UNDEFINED,
+		CALIBRATION_TAIL,
+		CALIBRATION_GYRO,
+		CALIBRATION_BLACK,
+		CALIBRATION_WHITE,
+		WAITING_FOR_START,
+		WALKING,
+		REMOTE,
+		LOOKUPGATE,
+		SEESAW,
+		GARAGE,
+		GRAY_DETECT
+	};
 
-    LineTracer* mLineTracer;
-    const Starter* mStarter;
-    Calibration* mCalibration;
+	LineTracer* mLineTracer;
+	const Starter* mStarter;
+	Calibration* mCalibration;
 	Remote* mRemote;
 	LookUpGate* mLookUpGate;// = new LookUpGate();
 	MeasureDistance* mMeasureDistance;// = new MeasureDistance();
 	Garage* mGarage;
-    BalancingWalker* mBalancingWalker;
-    Run_Stairs* mRun_Stairs;
-    Sound *mSound = Sound::getInstance();
+	BalancingWalker* mBalancingWalker;
+	Seesaw* mSeesaw;
+	Sound *mSound = Sound::getInstance();
+	Odmetry* mOdmetry;
+
 public:
-    State mState;
+	State mState;
+
 private:
 	int TimeCount;
 
-    void execUndefined();
+	void execUndefined();
 	void execCalibrationTail();
-    void execCalibrationGyro();
-    void execCalibrationBlack();
-    void execCalibrationWhite();
-    void execWaitingForStart();
-    void execWalking();
+	void execCalibrationGyro();
+	void execCalibrationBlack();
+	void execCalibrationWhite();
+	void execWaitingForStart();
+	void execWalking();
 	void execLookUpGate();
 	void execGarage();
 	void remote();
-    void execStairs() ;
-    void execGrayDetect();
+	void execSeesaw() ;
+	void execGrayDetect();
 
-    TailMotor *mTailMotor = TailMotor::getInstance();
+	TailMotor *mTailMotor = TailMotor::getInstance();
+
 public:
-    bool mStartSignal;
-    char sts ;
+	bool mStartSignal;
+	char sts ;
+
 };
 
-#endif  // EV3_APP_LINETRACERWITHSTARTER_H_
+#endif	// EV3_APP_LINETRACERWITHSTARTER_H_

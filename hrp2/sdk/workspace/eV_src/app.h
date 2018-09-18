@@ -25,7 +25,7 @@ extern "C" {
 #define TAILMOTOR_PRIORITY  TMIN_APP_TPRI + 4      /* TailMotorタスクの優先度  (14) */
 #define LOGGER_PRIORITY     TMIN_APP_TPRI + 5      /* Loggerタスクの優先度     (15) */
 #define REMOTE_PRIORITY     TMIN_APP_TPRI + 6      /* Remoteタスクの優先度     (15) */
-#define UI_PRIORITY         TMIN_APP_TPRI + 6      /* UIタスクの優先度         (16) */
+#define UI_PRIORITY         TMIN_APP_TPRI + 7      /* UIタスクの優先度         (16) */
 
 #define ABS(v)  ((v) < 0 ? -(v) : (v))
 /*
@@ -42,7 +42,8 @@ extern "C" {
 
 extern void main_task(intptr_t exinf);
 extern void tracer_task(intptr_t exinf);
-extern void ev3_cyc_tracer(intptr_t exinf);
+// extern void ev3_cyc_tracer(intptr_t exinf);
+// added part
 extern void tailmotor_task(intptr_t exinf);
 extern void ev3_cyc_tailmotor(intptr_t exinf);
 extern void odmetry_task(intptr_t exinf);

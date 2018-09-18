@@ -15,11 +15,11 @@
 #define RUN_LEFT_COURSE	(1)
 #define RUN_RIGHT_COURSE	(2)
 
-#define RUN_COURSE (RUN_LEFT_COURSE) /* ←ここにコースを記載 */
+#define RUN_COURSE (RUN_RIGHT_COURSE) /* ←ここにコースを記載 */
 
 /* デバッグモード */
 /* 0:通常走行モード	1:デバッグ走行モード */
-#define USE_DEBUG_MODE		(1)
+#define USE_DEBUG_MODE		(0)
 
 
 /* リモコン操作設定 */
@@ -39,22 +39,14 @@
 
 /* PID切り替え無効 */
 /* 0:PID切り替えあり	1:PID切り替え無し */
-#define USE_CONSTANT_PID		(1)
+#define USE_CONSTANT_PID		(0)
 
 
 /* FORWARD値設定 */
-#define CONSTANT_FORWARD_VAL	(60)
+#define CONSTANT_FORWARD_VAL	(20)
 
 /* FORWARD値設定 */
 #define SOUND_VOL				(4)
-
-/* ルックアップゲートテスト用設定 */
-/* 0:テストモードOFF	1:テストモードON */
-#define LOOKUPGATE_TEST_MODE	(1)
-
-/* グレー対応閾値設定 */
-/* 0:グレー対応OFF	1:グレー対応ON */
-#define USE_GRAY_THRESH	(1)
 
 
 #endif /* EV_SRC_APP_CONFIG_H_ */
