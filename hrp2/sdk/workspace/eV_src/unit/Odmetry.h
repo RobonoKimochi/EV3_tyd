@@ -7,9 +7,9 @@
 #include "Filter.h"
 
 #define GEAR 360.
-#define LEFT_WHEEL  4.05F//8.1F // 左車輪直径 [cm]
-#define RIGHT_WHEEL 4.05F//8.1F // 右車輪直径 [cm]
-#define TREAD       16.00F////13.26F // トレッド（車輪間距離） [cm]
+#define LEFT_WHEEL  5.0F//4.05F//8.1F // 左車輪直径 [cm]
+#define RIGHT_WHEEL 5.0F//4.05F//8.1F // 右車輪直径 [cm]
+#define TREAD       18.0F//16.00F////13.26F // トレッド（車輪間距離） [cm]
 #define SAMP_RATE   0.004F  // サンプリングレート [s]
 
 class Odmetry {
