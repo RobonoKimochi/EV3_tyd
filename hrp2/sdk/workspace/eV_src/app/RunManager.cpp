@@ -1,6 +1,68 @@
 #include "RunManager.h"
 #include "app.h"
 
+// テストコース時はTEST_COURSEを「１」 に、本番時は「０」にしてください。
+#define TEST_COURSE (1)
+//#define RUN_COURSE RUN_RIGHT_COURSE
+
+#if RUN_COURSE == RUN_LEFT_COURSE && TEST_COURSE
+// テスト Lコース
+#define ZONE1_LEN 260 
+#define ZONE2_LEN 141
+#define ZONE3_LEN 171
+#define ZONE4_LEN 56
+#define ZONE5_LEN 52
+#define ZONE6_LEN 59
+#define ZONE7_LEN 248
+#define ZONE8_LEN 55
+#define ZONE9_LEN 52
+#define GRAY_LEN  13
+
+#elif RUN_COURSE == RUN_LEFT_COURSE && !TEST_COURSE
+// 本番 Lコース
+#define ZONE1_LEN 260 
+#define ZONE2_LEN 141
+#define ZONE3_LEN 171
+#define ZONE4_LEN 56
+#define ZONE5_LEN 52
+#define ZONE6_LEN 59
+#define ZONE7_LEN 248
+#define ZONE8_LEN 55
+#define ZONE9_LEN 52
+#define GRAY_LEN  13
+
+#elif RUN_COURSE == RUN_RIGHT_COURSE && TEST_COURSE
+// テスト Rコース 
+#define ZONE1_LEN 258
+#define ZONE2_LEN 81
+#define ZONE3_LEN 81
+#define ZONE4_LEN 43
+#define ZONE5_LEN 55
+#define ZONE6_LEN 55
+#define ZONE7_LEN 65
+#define ZONE8_LEN 53
+#define ZONE9_LEN 53
+#define ZONE10_LEN 257
+#define ZONE11_LEN 48
+#define GRAY_LEN  13
+
+#elif RUN_COURSE == RUN_RIGHT_COURSE && !TEST_COURSE
+// 本番 Rコース
+#define ZONE1_LEN 258
+#define ZONE2_LEN 81
+#define ZONE3_LEN 81
+#define ZONE4_LEN 43
+#define ZONE5_LEN 55
+#define ZONE6_LEN 55
+#define ZONE7_LEN 65
+#define ZONE8_LEN 53
+#define ZONE9_LEN 53
+#define ZONE10_LEN 257
+#define ZONE11_LEN 48
+#define GRAY_LEN  13
+
+#endif
+
 /**
  * コンストラクタ
  * @param lineMonitor     ライン判定
@@ -29,6 +91,7 @@ RunManager::RunManager()
  * 最終的に最後のストレート区間を認識したのちに
  * 難関突破のアプリケーションに切り替えを行います。
  */
+#if 0
 RunManager::Section RunManager::determineCourse(){
     static uint8_t line;    // ライン情報（直線、右曲線、左曲線）
     static uint16_t dist;    // 距離
@@ -136,6 +199,192 @@ RunManager::Section RunManager::determineCourse(){
         return SECTION_ERROR;// Error
     }
 }
+#endif
+
+#if RUN_COURSE == RUN_LEFT_COURSE
+
+RunManager::Section RunManager::determineCourse() {
+    static uint8_t line;    // ライン情報（直線、右曲線、左曲線）
+    static uint16_t dist;    // 距離
+    
+    line = determineLine();
+    dist = (uint16_t)getDistanceFromOrigin();
+    dLine = line;
+    dDist = dist;
+    
+    switch(mZone) {
+    case START:
+        mZone = ZONE1;
+        setOrigin();
+        return STRAIGHT_ZONE;
+
+    case ZONE1:
+        if(dist > ZONE1_LEN) {
+            mZone = ZONE2;
+            setOrigin();
+        }
+        return STRAIGHT_ZONE;
+
+    case ZONE2:
+        if(dist > ZONE2_LEN && line == LEFT_CURVE) {
+            mZone = ZONE3;
+            setOrigin();
+        }
+        return CURB_ZONE;
+
+    case ZONE3:
+        if(dist > ZONE3_LEN) {
+            mZone = ZONE4;
+            setOrigin();
+        }
+        return STRAIGHT_ZONE;
+
+    case ZONE4:
+        if(dist > ZONE4_LEN && line == RIGHT_CURVE) {
+            mZone = ZONE5;
+            setOrigin();
+        }
+        return CURB_ZONE;
+
+    case ZONE5:
+        if(dist > ZONE5_LEN) {
+            mZone = ZONE6;
+            setOrigin();
+        }
+        return STRAIGHT_ZONE;
+    
+    case ZONE6:
+        if(dist > ZONE6_LEN && line == RIGHT_CURVE) {
+            mZone = ZONE7;
+            setOrigin();
+        }
+        return CURB_ZONE;
+
+    case ZONE7:
+        if(dist > ZONE7_LEN) {
+            mZone = ZONE8;
+            setOrigin();
+        }
+        return STRAIGHT_ZONE;
+
+    case ZONE8:
+        if(dist > ZONE8_LEN && line == LEFT_CURVE) {
+            mZone = ZONE7;
+            setOrigin();
+        }
+        return CURB_ZONE;
+
+    case ZONE9:
+        return (dist < GRAY_LEN) ? GRAY : STRAIGHT_ZONE;
+
+    default:
+        return SECTION_ERROR;
+    }
+}
+
+#elif RUN_COURSE == RUN_RIGHT_COURSE
+
+RunManager::Section RunManager::determineCourse(){
+    static uint8_t line;    // ライン情報（直線、右曲線、左曲線）
+    static uint16_t dist;    // 距離
+
+    line = determineLine();
+    dist = (uint16_t)getDistanceFromOrigin();
+    dLine = line;
+    dDist = dist;
+    
+    switch(mZone) {
+    case START:
+        mZone = ZONE1;
+        setOrigin();
+        return STRAIGHT_ZONE;
+
+    case ZONE1:
+        if(dist > ZONE1_LEN) {
+            mZone = ZONE2;
+            setOrigin();
+        }
+        return STRAIGHT_ZONE;
+
+    case ZONE2:
+        if(dist > ZONE2_LEN && line == LEFT_CURVE) {
+            mZone = ZONE3;
+            setOrigin();
+        }
+        return CURB_ZONE;
+
+    case ZONE3:
+        if(dist > ZONE3_LEN && line == LEFT_CURVE){
+            mZone = ZONE4;
+            setOrigin();
+        }
+        return CURB_ZONE;
+
+    case ZONE4:
+        if(dist > ZONE4_LEN) {
+            mZone = ZONE5;
+            setOrigin();
+        }
+        return STRAIGHT_ZONE;
+
+    case ZONE5:
+        if(dist > ZONE5_LEN && line == LEFT_CURVE)) {
+            mZone = ZONE6;
+            setOrigin();
+        }
+        return CURB_ZONE;
+    
+    case ZONE6:
+        if(dist > ZONE6_LEN && line == RIGHT_CURVE) {
+            mZone = ZONE7;
+            setOrigin();
+        }
+        return CURB_ZONE;
+
+    case ZONE7:
+        if(dist > ZONE7_LEN) {
+            mZone = ZONE8;
+            setOrigin();
+        }
+        return STRAIGHT_ZONE;
+
+    case ZONE8:
+        if(dist > ZONE8_LEN && line == RIGHT_CURVE) {
+            mZone = ZONE9;
+            setOrigin();
+        }
+        return CURB_ZONE;
+    
+    case ZONE9:
+        if(dist > ZONE9_LEN && line == RIGHT_CURVE) {
+            mZone = ZONE10;
+            setOrigin();
+        }
+        return CURB_ZONE;
+
+    case ZONE10:
+        if(dist > ZONE10_LEN) {
+            mZone = ZONE11;
+            setOrigin();
+        }
+        return STRAIGHT_ZONE;
+
+    case ZONE11:
+        if(dist > ZONE11_LEN && line == LEFT_CURVE) {
+            mZone = ZONE12;
+            setOrigin();
+        }
+        return CURB_ZONE;
+
+    case ZONE12:
+        return (dist < GRAY_LEN) ? GRAY : STRAIGHT_ZONE;
+
+    default:
+        return SECTION_ERROR;
+    }
+}
+
+#endif
 
 /**
  * 角度の時間変化率から現在の走行ラインが

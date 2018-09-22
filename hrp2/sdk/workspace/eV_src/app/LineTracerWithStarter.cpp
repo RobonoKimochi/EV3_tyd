@@ -140,9 +140,7 @@ void LineTracerWithStarter::execCalibrationTail() {
 		mState = CALIBRATION_BLACK;
         mSound->ok();
 		mTailMotor->setAngle(94);	// 開始待ち時尻尾91°
-#if 1
-        mState = WAITING_FOR_START; // キャリブレーション飛ばし
-#endif
+        //mState = WAITING_FOR_START; // キャリブレーション飛ばし
 	}
 
 
@@ -156,7 +154,7 @@ void LineTracerWithStarter::execCalibrationGyro() {
 
         mState = CALIBRATION_TAIL;
         mSound->ok();
-        // mState = WAITING_FOR_START; // きゃりぶれ飛ばし
+        //mState = WAITING_FOR_START; // きゃりぶれ飛ばし
     }
 }
 

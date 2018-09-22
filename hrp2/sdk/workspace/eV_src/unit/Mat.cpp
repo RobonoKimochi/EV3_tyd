@@ -1,5 +1,5 @@
 #include "Mat.h"
-#include "Math.h"
+#include "math.h"
 
 float Mat::Sin(float x){
     long ix, subix, sign, tval;
