@@ -32,7 +32,7 @@ private:
 	const float TailPGainStand = 5.0F;
 	const float TailPGainBalance = 1.0F;
 	const int TailAngleSettle = 80;
-	const int TailAngleLean = 61;
+	const int TailAngleLean = 57;		// 2018_0922 61‚©‚ç•ÏX¼Œ´
 	const int TailAngleStand = 83;
 	const int TailAngleBalance = 1;
 	const int CutGyroThresh = -5;

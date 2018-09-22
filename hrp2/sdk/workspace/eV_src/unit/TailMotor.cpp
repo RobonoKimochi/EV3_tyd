@@ -11,6 +11,7 @@ TailMotor::TailMotor()
 	  count(0),
 	  mPWM(0),
 	  mP_Gain(0.50F),
+	  mI_Gain(0.10F),
 	  PWM_MAX(60),
 	  preTargetAngle(0),
 	  TimeCount(0),
@@ -81,7 +82,25 @@ void TailMotor::setAngle( int32_t angle )
 
 void TailMotor::moveTail()
 {
-	mPWM = (float)(( mAngle + mOffset - mTailMotor.getCount() ) * mP_Gain );	// 比例制御
+	float s_err;	// 偏差
+	float s_p,s_i;
+	static float s_integral,s_preerr;
+	
+	s_err =  mAngle + mOffset - mTailMotor.getCount()  ;	
+	
+	s_p = s_err * mP_Gain;
+	s_i = s_integral * mI_Gain;
+	
+#ifdef USE_PI
+	mPWM = s_p + s_i;
+#else
+	mPWM = s_p ;
+#endif
+	
+	s_preerr = s_err;
+	s_integral = s_integral + (s_err + s_preerr) / 2.0 * 0.004;
+
+//	mPWM = (float)(( mAngle + mOffset - mTailMotor.getCount() ) * mP_Gain );	// 比例制御
 	
 	// PWM出力飽和処理
 	if( mPWM > PWM_MAX )		// 制御PWM絶対最大値より大きい？

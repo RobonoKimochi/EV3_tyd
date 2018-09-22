@@ -5,6 +5,8 @@
 #include "MotorDriver.h"
 #include "app.h"
 
+#define USE_PI
+
 class TailMotor
 {
 	public:
@@ -92,6 +94,7 @@ class TailMotor
 		bool     flag;
 		float    mPWM;					// PWM制御値
 		float    mP_Gain;				// 比例制御ゲイン
+		float	mI_Gain;				// 積分ゲイン
 		float    PWM_MAX;				// PWM制御飽和閾値
 	    float    SetAngle;
 		float    preTargetAngle;
