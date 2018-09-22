@@ -192,6 +192,15 @@ void tracer_task(intptr_t exinf) {
         gLineTracerWithStarter->run();  // (倒立)走行
     }
 
+#if USE_OUTPUT_LOG
+  static int start_flag = 0;
+  if ((gLineTracerWithStarter->mState == 6) // 6はLineTracerWithStarter::WALKING
+	&& (start_flag == 0)) {
+	  ev3_sta_cyc(EV3_CYC_LOGGER);
+	  start_flag = 1;
+  }
+#endif
+
     ext_tsk();
 }
 /**
@@ -329,7 +338,7 @@ void ui_task(intptr_t exinf){
 			/* デバッグ用 */
 	        gLogger->init();
 	        gOdmetry->clearLocation();
-//	        ev3_sta_cyc(EV3_CYC_LOGGER);
+	        ev3_sta_cyc(EV3_CYC_LOGGER);
 	        // gUI->putString("\n\rtime,x,y,theta,brightness,gyro,forward,turn,deltaTheta,battery,state,TailAngle,Sonar,Zone,dist,Line\n\r");
 //			gUI->putString("\n\rtime,x,y,theta,deltaTheta,battery,state,sonar,Zone,dist,Line,count,gyro\n\r");
 #endif
