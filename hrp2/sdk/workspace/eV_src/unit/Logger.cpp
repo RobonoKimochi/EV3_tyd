@@ -35,17 +35,10 @@ void Logger::init(){
 void Logger::sendLog(float data[], unsigned char num){
     unsigned char i;
     float time = (float)mClock->now() / 1000.0f;
-    int point; /* 文字列ポインタの位置 */
-    point = 0;
 
     sprintf(mBuffer,"%07.3f", time);
-    point = 7;
 
     for(i = 0; i < num; i++){
-//    	sprintf(&mBuffer[point],",%07.3f", data[i]);
-//    	point += 8;
-//    	if (data[i] < 0) point += 1;
-
     	int buf = strlen(mBuffer);
     	sprintf(&mBuffer[buf],";%07.3f", data[i]);
 
