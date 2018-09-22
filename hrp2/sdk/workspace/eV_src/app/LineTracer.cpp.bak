@@ -52,15 +52,12 @@ void LineTracer::run() {
 #endif
 
         int direction = calcDirection();
-#if 0
     	//両輪のPwm値がマイナスの時に符号を逆にする。主にスタート用
     	if((mBalancingWalker->getLeftPwm() < 0) && (mBalancingWalker->getRightPwm() < 0)) {
     		direction = -direction / 2;
     		direction = direction * (1.0f - percent);
     		percent = percent * 0.9f;
      	}
-#endif
-
     	//direction = 0;
 #if USE_DEBUG_MODE
     mPidController->setPID(1.0, 0, 10.0);
