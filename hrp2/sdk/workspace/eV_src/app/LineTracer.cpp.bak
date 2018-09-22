@@ -40,14 +40,14 @@ void LineTracer::run() {
         mIsInitialized = true;
     }
     // コース状況を判断する
-//    mSection = mRunManager->determineCourse();
+    mSection = mRunManager->determineCourse();
 
 #if USE_DEBUG_MODE
 
 #if USE_CONSTANT_PID
     /* デバッグ用処理 */
     /* 走行区間によるPIDの切り替えを無効化 */
-//    mSection = RunManager::STRAIGHT_ZONE;
+    mSection = RunManager::STRAIGHT_ZONE;
 #endif
 #endif
 
@@ -60,9 +60,7 @@ void LineTracer::run() {
      	}
     	//direction = 0;
 #if USE_DEBUG_MODE
-//    mPidController->setPID(1.0, 0, 10.0);
-    mPidController->setPID(1.5, 0, 20.0);
-
+    mPidController->setPID(1.0, 0, 10.0);
     mBalancingWalker->setCommand(CONSTANT_FORWARD_VAL, direction);	//■■速度は暫定
     mBalancingWalker->run();
 
@@ -74,8 +72,6 @@ void LineTracer::run() {
 #endif
 
 #else
-
-#if 0
     if( mSection == RunManager::STRAIGHT_ZONE){
         mPidController->setPID(1.0, 0, 10.0);
         mBalancingWalker->setCommand(100, direction);	//■■速度は暫定
@@ -94,8 +90,6 @@ void LineTracer::run() {
         mBalancingWalker->setCommand(20, direction);	//■■速度は暫定
         mBalancingWalker->run();
     }
-#endif
-
 #endif
 
     // アイデア②→LineTracer内でスタートから車庫まで（ソース管理が難しい?）
@@ -141,12 +135,11 @@ bool LineTracer::detectGray() {
 	mLineMonitor->LineThresholdGray();
 	mRightWheel.setPWM(10 - mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()));
 	mLeftWheel.setPWM(10 + mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()));
-
-//    if( mRunManager->detectGray() == true){
-//        return true;
-//    }else{
+    if( mRunManager->detectGray() == true){
+        return true;
+    }else{
         return false;
-//    }
+    }
 }
 /**
  * 走行体の向きを計算する

@@ -92,8 +92,8 @@ void BalancingWalker::runWithoutBalancing() {
  * バランス走行に必要なものをリセットする
  */
 void BalancingWalker::init() {
-//    int offset = mGyroSensor.getAnglerVelocity();  // ジャイロセンサ値
-	int offset = 0;
+    int offset = mGyroSensor.getAnglerVelocity();  // ジャイロセンサ値
+//	int offset = 0;
 	
     // モータエンコーダをリセットする
     mLeftWheel.reset();
