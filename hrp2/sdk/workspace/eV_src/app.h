@@ -20,12 +20,12 @@ extern "C" {
 // #define TMIN_TPRI        1            /* タスク優先度の最小値（最高値） */
 // #define TMIN_APP_TPRI        (TMIN_TPRI + 8)
 #define MAIN_PRIORITY       TMIN_APP_TPRI + 1      /* mainタスクの優先度       (10) */
-#define TRACER_PRIORITY     TMIN_APP_TPRI + 2      /* Tracerタスクの優先度     (12) */
-#define ODMETRY_PRIORITY    TMIN_APP_TPRI + 3      /* Odmetryタスクの優先度    (13) */
-#define TAILMOTOR_PRIORITY  TMIN_APP_TPRI + 4      /* TailMotorタスクの優先度  (14) */
-#define LOGGER_PRIORITY     TMIN_APP_TPRI + 5      /* Loggerタスクの優先度     (15) */
+#define TRACER_PRIORITY     TMIN_APP_TPRI + 2      /* Tracerタスクの優先度     (11) */
+#define ODMETRY_PRIORITY    TMIN_APP_TPRI + 3      /* Odmetryタスクの優先度    (12) */
+#define TAILMOTOR_PRIORITY  TMIN_APP_TPRI + 4      /* TailMotorタスクの優先度  (13) */
+#define UI_PRIORITY         TMIN_APP_TPRI + 5      /* UIタスクの優先度         (14) */
 #define REMOTE_PRIORITY     TMIN_APP_TPRI + 6      /* Remoteタスクの優先度     (15) */
-#define UI_PRIORITY         TMIN_APP_TPRI + 6      /* UIタスクの優先度         (16) */
+#define LOGGER_PRIORITY     TMIN_APP_TPRI + 6      /* Loggerタスクの優先度     (15) */
 
 #define ABS(v)  ((v) < 0 ? -(v) : (v))
 /*
