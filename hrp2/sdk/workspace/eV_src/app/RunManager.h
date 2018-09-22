@@ -35,7 +35,11 @@ public:
         ZONE5,  // Final Streat
         ZONE6,  // After Goal left curb
         ZONE7,   // last straight to lookupgate
-        ZONE8       // kaidan heno tsunagi
+        ZONE8,       // kaidan heno tsunagi
+        ZONE9,
+        ZONE10,
+        ZONE11,
+        ZONE12
     };
     void setOrigin();               // 距離を測る時の原点を設定する
     float getDistanceFromOrigin();  // 原点からの距離を測定する
