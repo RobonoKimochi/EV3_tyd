@@ -129,7 +129,7 @@ RunManager::Section RunManager::determineCourse() {
         return CURB_ZONE;
 
     case ZONE3:
-        if(dist > ZONE3_LEN && CHECK_COURSE(RIGHT_CURVE) {
+        if(dist > ZONE3_LEN && CHECK_COURSE(RIGHT_CURVE)) {
             mZone = ZONE4;
             setOrigin();
             mSound->ok();
