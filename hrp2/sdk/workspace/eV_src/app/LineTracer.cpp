@@ -52,7 +52,7 @@ void LineTracer::run() {
 #endif
 
         int direction = calcDirection();
-#if 0
+#if 1
     	//両輪のPwm値がマイナスの時に符号を逆にする。主にスタート用
     	if((mBalancingWalker->getLeftPwm() < 0) && (mBalancingWalker->getRightPwm() < 0)) {
     		direction = -direction / 2;
@@ -62,11 +62,21 @@ void LineTracer::run() {
 #endif
 
     	//direction = 0;
+#if 1 /* ターン値ガード */
+
+    	if (direction > TURN_GUARD) {
+    		direction = TURN_GUARD;
+    	} else if (direction < -TURN_GUARD) {
+    		direction = -TURN_GUARD;
+    	}
+#endif
+
 #if !USE_LINE_TRACE
     direction = 0;
 #endif
+
 #if USE_DEBUG_MODE
-    mPidController->setPID(1.0, 0, 10.0);
+    mPidController->setPID(0.2, 0, 9.0);
     mBalancingWalker->setCommand(CONSTANT_FORWARD_VAL, direction);	//■■速度は暫定
     mBalancingWalker->run();
 
@@ -79,11 +89,11 @@ void LineTracer::run() {
 
 #else
     if( mSection == RunManager::STRAIGHT_ZONE){
-        mPidController->setPID(1.0, 0, 10.0);
+    	mPidController->setPID(0.2, 0, 9.0);
         mBalancingWalker->setCommand(100, direction);	//■■速度は暫定
         mBalancingWalker->run();
     }else if(mSection == RunManager::CURB_ZONE){
-        mPidController->setPID(1.5, 0 ,5);
+    	mPidController->setPID(0.5, 0, 10.0);
         mBalancingWalker->setCommand(70, direction);	//■■速度は暫定
         mBalancingWalker->run();
     }else if( mSection == RunManager::FINISHED){

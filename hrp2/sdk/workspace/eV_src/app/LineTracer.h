@@ -18,6 +18,8 @@
 #include "RunManager.h"
 #include "app_config.h"
 
+#define TURN_GUARD 30
+
 class LineTracer {
 public:
     LineTracer(LineMonitor* lineMonitor,
