@@ -62,6 +62,9 @@ void LineTracer::run() {
 #endif
 
     	//direction = 0;
+#if !USE_LINE_TRACE
+    direction = 0;
+#endif
 #if USE_DEBUG_MODE
     mPidController->setPID(1.0, 0, 10.0);
     mBalancingWalker->setCommand(CONSTANT_FORWARD_VAL, direction);	//■■速度は暫定

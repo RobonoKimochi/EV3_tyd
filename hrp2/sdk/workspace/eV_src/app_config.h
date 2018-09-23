@@ -19,12 +19,12 @@
 
 /* デバッグモード */
 /* 0:通常走行モード	1:デバッグ走行モード */
-#define USE_DEBUG_MODE		(1)
+#define USE_DEBUG_MODE		(0)
 
 
 /* リモコン操作設定 */
 /* 0:リモコン操作なし	1:リモコン操作あり */
-#define USE_REMOTE_CONTROL_MODE	(1)
+#define USE_REMOTE_CONTROL_MODE	(0)
 
 
 /* ロガー設定 */
@@ -43,18 +43,18 @@
 
 
 /* FORWARD値設定 */
-#define CONSTANT_FORWARD_VAL	(60)
+#define CONSTANT_FORWARD_VAL	(100)
 
 /* FORWARD値設定 */
 #define SOUND_VOL				(4)
 
 /* ルックアップゲートテスト用設定 */
 /* 0:テストモードOFF	1:テストモードON */
-#define LOOKUPGATE_TEST_MODE	(1)
+#define LOOKUPGATE_TEST_MODE	(0)
 
 /* グレー対応閾値設定 */
 /* 0:グレー対応OFF	1:グレー対応ON */
-#define USE_GRAY_THRESH	(1)
+#define USE_GRAY_THRESH	(0)
 
 
 #endif /* EV_SRC_APP_CONFIG_H_ */
