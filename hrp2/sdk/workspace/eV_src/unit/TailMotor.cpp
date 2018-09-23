@@ -1,4 +1,5 @@
 #include "TailMotor.h"
+#include <math.h>
 
 /**
  * コンストラクタ
@@ -97,8 +98,15 @@ void TailMotor::moveTail()
 	mPWM = s_p ;
 #endif
 	
+	// 累積積分
 	s_preerr = s_err;
 	s_integral = s_integral + (s_err + s_preerr) / 2.0 * 0.004;
+	
+	// 目標に達したら累積積分リセット
+	if ( fabs(s_err) < 2.0f)
+	{
+		s_integral = 0;
+	}
 
 //	mPWM = (float)(( mAngle + mOffset - mTailMotor.getCount() ) * mP_Gain );	// 比例制御
 	
