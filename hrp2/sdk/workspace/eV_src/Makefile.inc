@@ -27,7 +27,7 @@ APPL_CXXOBJS += \
 	RunManager.o \
     Garage.o \
 	Sound.o \
-	Run_Stairs.o
+	Seesaw.o
 
 SRCLANG := c++
 

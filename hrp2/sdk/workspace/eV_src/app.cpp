@@ -74,7 +74,7 @@ static AttitudeControl	*gAttitudeControl;
 static LookUpGate		*gLookUpGate;
 static Odmetry			*gOdmetry;
 static Sound 			*gSound;
-static Run_Stairs		*gRun_Stairs ;
+static Seesaw			*gSeesaw;
 static Clock			*gClock;
 
 /**
@@ -98,8 +98,6 @@ static void user_system_create() {
     gCalibration     = new Calibration(gColorSensor, gGyroSensor, gLineMonitor);
 	gRemote          = new Remote(gBalancingWalker);
 	gGarage          = new Garage(gBalancingWalker, gLineTracer, gPidController, gLineMonitor);
-	gRun_Stairs		 = new Run_Stairs( gBalancingWalker, gPidController, gLineMonitor);
-    gLineTracerWithStarter = new LineTracerWithStarter(gLineTracer, gStarter, gCalibration, gRemote, gLookUpGate , gMeasureDistance, gGarage, gBalancingWalker, gRun_Stairs);
     gUI             = new UI();
     gLogger         = new Logger();
 	gOdmetry		= Odmetry::getInstance();
@@ -107,6 +105,8 @@ static void user_system_create() {
 	gTailMotor		= TailMotor::getInstance();
 	gSound 			= Sound::getInstance();
 	gClock			 = new Clock();
+	gSeesaw		 			= new Seesaw(gAttitudeControl, gBalancingWalker, gLineTracer, gPidController, gLineMonitor, gGyroSensor, gOdmetry);
+	gLineTracerWithStarter 	= new LineTracerWithStarter(gLineTracer, gStarter, gCalibration, gRemote, gLookUpGate , gMeasureDistance, gGarage, gBalancingWalker, gSeesaw);
 
     // 初期化完了通知
     ev3_led_set_color(LED_ORANGE);
@@ -140,7 +140,7 @@ static void user_system_destroy() {
     delete gLookUpGate;
     delete gRemote;
     delete gGarage;
-    delete gRun_Stairs;
+	delete gSeesaw;
     delete gOdmetry;
     delete gRunManager;
     delete gTailMotor;

@@ -26,6 +26,7 @@
 #include "BalancingWalker.h"
 #include "Sound.h"
 
+
 #include "Clock.h"
 
 // デストラクタ問題の回避
@@ -39,7 +40,7 @@ using ev3api::Motor;
 using ev3api::Clock;
 
 // Device objects
-// オブジェクトを静的に確保する
+// オブジェクトを静的に確保する。
 //ColorSensor gColorSensor(PORT_3);
 //GyroSensor  gGyroSensor(PORT_4);
 //Motor       gLeftWheel(PORT_C);
@@ -73,7 +74,7 @@ static AttitudeControl	*gAttitudeControl;
 static LookUpGate		*gLookUpGate;
 static Odmetry			*gOdmetry;
 static Sound 			*gSound;
-static Run_Stairs		*gRun_Stairs ;
+static Seesaw			*gSeesaw;
 static Clock			*gClock;
 
 /**
@@ -97,8 +98,6 @@ static void user_system_create() {
     gCalibration     = new Calibration(gColorSensor, gGyroSensor, gLineMonitor);
 	gRemote          = new Remote(gBalancingWalker);
 	gGarage          = new Garage(gBalancingWalker, gLineTracer, gPidController, gLineMonitor);
-	gRun_Stairs		 = new Run_Stairs( gBalancingWalker, gPidController, gLineMonitor);
-    gLineTracerWithStarter = new LineTracerWithStarter(gLineTracer, gStarter, gCalibration, gRemote, gLookUpGate , gMeasureDistance, gGarage, gBalancingWalker, gRun_Stairs);
     gUI             = new UI();
     gLogger         = new Logger();
 	gOdmetry		= Odmetry::getInstance();
@@ -106,6 +105,8 @@ static void user_system_create() {
 	gTailMotor		= TailMotor::getInstance();
 	gSound 			= Sound::getInstance();
 	gClock			 = new Clock();
+	gSeesaw		 			= new Seesaw(gAttitudeControl, gBalancingWalker, gLineTracer, gPidController, gLineMonitor, gGyroSensor, gOdmetry);
+	gLineTracerWithStarter 	= new LineTracerWithStarter(gLineTracer, gStarter, gCalibration, gRemote, gLookUpGate , gMeasureDistance, gGarage, gBalancingWalker, gSeesaw);
 
     // 初期化完了通知
     ev3_led_set_color(LED_ORANGE);
@@ -139,7 +140,7 @@ static void user_system_destroy() {
     delete gLookUpGate;
     delete gRemote;
     delete gGarage;
-    delete gRun_Stairs;
+	delete gSeesaw;
     delete gOdmetry;
     delete gRunManager;
     delete gTailMotor;
@@ -190,6 +191,15 @@ void tracer_task(intptr_t exinf) {
 //        gLineTracer->run();  // 倒立走行
         gLineTracerWithStarter->run();  // (倒立)走行
     }
+
+#if USE_OUTPUT_LOG
+  static int start_flag = 0;
+  if ((gLineTracerWithStarter->mState == 6) // 6はLineTracerWithStarter::WALKING
+	&& (start_flag == 0)) {
+	  ev3_sta_cyc(EV3_CYC_LOGGER);
+	  start_flag = 1;
+  }
+#endif
 
     ext_tsk();
 }
@@ -328,7 +338,7 @@ void ui_task(intptr_t exinf){
 			/* デバッグ用 */
 	        gLogger->init();
 	        gOdmetry->clearLocation();
-//	        ev3_sta_cyc(EV3_CYC_LOGGER);
+	        ev3_sta_cyc(EV3_CYC_LOGGER);
 	        // gUI->putString("\n\rtime,x,y,theta,brightness,gyro,forward,turn,deltaTheta,battery,state,TailAngle,Sonar,Zone,dist,Line\n\r");
 //			gUI->putString("\n\rtime,x,y,theta,deltaTheta,battery,state,sonar,Zone,dist,Line,count,gyro\n\r");
 #endif

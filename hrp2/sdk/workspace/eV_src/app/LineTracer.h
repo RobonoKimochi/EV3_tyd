@@ -30,6 +30,8 @@ public:
     void run();
     void runWithoutBalancing();
     bool isFinished();
+	int calcDirection();
+
     float debug;
 private:
     LineMonitor* mLineMonitor;
@@ -39,8 +41,6 @@ private:
     bool mIsInitialized;
     bool mIsFinished;
 	float percent;
-
-    int calcDirection();
 
 	ev3api::Motor mRightWheel = MotorDriver::getInstance().getRightWheel();
     ev3api::Motor mLeftWheel = MotorDriver::getInstance().getLeftWheel();

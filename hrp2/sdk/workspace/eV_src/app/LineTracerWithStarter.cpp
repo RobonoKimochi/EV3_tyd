@@ -11,6 +11,7 @@
 #include "MotorDriver.h"
 #include "app.h"
 #include "TailMotor.h"
+#include "Seesaw.h"
 /**
  * コンストラクタ
  * @param lineTracer ライントレーサ
@@ -24,8 +25,7 @@
  											 MeasureDistance *measureDistance,
  											 Garage*         Garage,
                                               BalancingWalker* balancingWalker,
-                                              Run_Stairs*       run_Stairs
- 											 )
+											   Seesaw*			seesaw			)
     : TailInit(false),
       LookUpCompFlag(false),
       mLineTracer(lineTracer),
@@ -36,7 +36,7 @@
       mMeasureDistance(measureDistance),
       mGarage(Garage),
       mBalancingWalker(balancingWalker),
-      mRun_Stairs(run_Stairs),
+	  mSeesaw(seesaw),
       mState(UNDEFINED),
       TimeCount(0),
       mStartSignal(false)
@@ -85,9 +85,9 @@ void LineTracerWithStarter::run() {
     case GRAY_DETECT:
         execGrayDetect();
         break;
-    case STAIRS:
-        execStairs() ;
-        break;
+	case SEESAW:
+		execSeesaw();
+		break;
     case GARAGE:
     	execGarage();
     	break;
@@ -220,7 +220,7 @@ void LineTracerWithStarter::execWalking() {
 #if RUN_COURSE == RUN_RIGHT_COURSE
         if( mLineTracer->isFinished() == true){
 
-            mState = STAIRS;
+            mState = SEESAW;
 #elif RUN_COURSE == RUN_LEFT_COURSE
         if( mLineTracer->isFinished() == true && mMeasureDistance->DetectGate() == true){
             mState = LOOKUPGATE;
@@ -244,17 +244,15 @@ void LineTracerWithStarter::execLookUpGate() {
 	}
 }
 /**
- * 階段制御の処理
+ * シーソー制御の処理
  */
-
-void LineTracerWithStarter::execStairs()
+void LineTracerWithStarter::execSeesaw()
 {
-	 sts = mRun_Stairs->Stairs_Main() ;
+	ev3_led_set_color(LED_GREEN);				/* 通常走行は緑 			*/
 
-	if ( sts == OTHER_CTRL )
-	{
-		// mState = WALKING ; // 要検討
-	}
+	mSeesaw->Initialize();						/* 初期化					*/
+	mSeesaw->State();							/* 状態判定					*/
+	mSeesaw->Run_Manage();						/* 走行制御					*/
 }
 /**
  * 車庫入れ状態の処理
@@ -279,7 +277,8 @@ void LineTracerWithStarter::execGrayDetect() {
             mState = GARAGE;
         }
 	}
-}/**
+}
+/**
  * リモート中の処理
  */
 void LineTracerWithStarter::remote() {

@@ -17,7 +17,7 @@
 #include "LookUpGate.h"
 #include "Garage.h"
 #include "BalancingWalker.h"
-#include "Run_Stairs.h"
+#include "Seesaw.h"
 #include "Sound.h"
 
 class LineTracerWithStarter {
@@ -30,7 +30,7 @@ public:
                MeasureDistance *measureDistance,
                Garage*         garage,
                BalancingWalker* balancingWalker,
-               Run_Stairs*      run_Stairs
+						   Seesaw*			seesaw
                );
     virtual ~LineTracerWithStarter();
 
@@ -51,7 +51,7 @@ private:
         WALKING,
     	REMOTE,
     	LOOKUPGATE,
-        STAIRS,
+		SEESAW,
     	GARAGE,
         GRAY_DETECT
     };
@@ -64,7 +64,7 @@ private:
 	MeasureDistance* mMeasureDistance;// = new MeasureDistance();
 	Garage* mGarage;
     BalancingWalker* mBalancingWalker;
-    Run_Stairs* mRun_Stairs;
+	Seesaw* mSeesaw;
     Sound *mSound = Sound::getInstance();
 public:
     State mState;
@@ -81,7 +81,7 @@ private:
 	void execLookUpGate();
 	void execGarage();
 	void remote();
-    void execStairs() ;
+	void execSeesaw() ;
     void execGrayDetect();
 
     TailMotor *mTailMotor = TailMotor::getInstance();
