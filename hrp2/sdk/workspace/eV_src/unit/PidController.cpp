@@ -36,7 +36,7 @@ int8_t PidController::calControlledVariable(int8_t deviation) {
 #if RUN_COURSE == RUN_LEFT_COURSE
 #define KPID_EDGE_FACTOR    (int32_t)(-1)        // ライントレース方向 1 or -1
 #elif RUN_COURSE == RUN_RIGHT_COURSE
-#define KPID_EDGE_FACTOR    (int32_t)(1)        // ライントレース方向 1 or -1
+#define KPID_EDGE_FACTOR    (int32_t)(-1)        // ライントレース方向 1 or -1
 #endif
 
 #define KPID_TURN_LIMIT     (int32_t)(100)      // 旋回指示値 限界値
@@ -99,7 +99,7 @@ int8_t PidController::LeancalControlledVariable(int8_t deviation) {
 #if RUN_COURSE == RUN_LEFT_COURSE
 #define KPID_EDGE_FACTOR    (int32_t)(-1)        // ライントレース方向 1 or -1
 #elif RUN_COURSE == RUN_RIGHT_COURSE
-#define KPID_EDGE_FACTOR    (int32_t)(1)        // ライントレース方向 1 or -1
+#define KPID_EDGE_FACTOR    (int32_t)(-1)        // ライントレース方向 1 or -1
 #endif
 #define KPID_TURN_LIMIT     (int32_t)(100)      // 旋回指示値 限界値
 
