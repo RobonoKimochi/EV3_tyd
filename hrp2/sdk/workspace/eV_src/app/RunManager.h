@@ -19,7 +19,7 @@ public:
         CURB_ZONE,      // 走行区間
     	LOOSE_CURVE_ZONE,
     	TIGHT_CURVE_ZONE,
-        GRAY,
+        SLOW,
         FINISHED      // 走行区間終了
     };
     enum Line {

@@ -112,10 +112,15 @@ void LineTracer::run() {
     	mPidController->setPID(0.57, 0, 20.0);
         mBalancingWalker->setCommand(CONSTANT_FORWARD_VAL, direction);
         mBalancingWalker->run();
+    }else if(mSection == RunManager::SLOW){
+    	mLineMonitor->LineThresholdGray();
+    	mPidController->setPID(0.5, 0, 40.0);
+        mBalancingWalker->setCommand(40, direction);	//■■速度は暫定
+        mBalancingWalker->run();
     }else if( mSection == RunManager::FINISHED){
         mIsFinished = true;
     	mLineMonitor->LineThresholdGray();
-    	mPidController->setPID(0.4, 0, 40.0);
+    	mPidController->setPID(0.4, 0, 5.0);
         mBalancingWalker->setCommand(20, direction);	//■■速度は暫定
         mBalancingWalker->run();
     }
