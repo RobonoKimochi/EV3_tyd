@@ -5,7 +5,7 @@
  * コンストラクタ
  */
 Seesaw::Seesaw(AttitudeControl* attitudeControl, BalancingWalker* balancingwalker, LineTracer* linetracer, PidController* pidController, \
-				LineMonitor* lineMonitor, ev3api::GyroSensor& gyroSensor, Odmetry* odmetry)
+				LineMonitor* lineMonitor, ev3api::GyroSensor& gyroSensor, Odmetry* odmetry, ev3api::ColorSensor& colorsensor)
 		:  	mAttitudeControl(attitudeControl),
 			mBalancingWalker(balancingwalker),
 			mLineTracer(linetracer),
@@ -13,11 +13,15 @@ Seesaw::Seesaw(AttitudeControl* attitudeControl, BalancingWalker* balancingwalke
 			mLineMonitor(lineMonitor),
 			mGyroSensor(gyroSensor),
 			mOdmetry(odmetry),
+			mColorSensor(colorsensor),
 			SeesawDistance(0),
 			SeesawDirection(0),
 			SeesawPosition(0),
 			SeesawRunMode(0),
-			GyroValTotal(0)
+			GyroValTotal(0),
+			StayTimer(0),
+			FreeTimer(0),
+			BrakeTimer(0)
 {
 
 }
@@ -79,13 +83,15 @@ void Seesaw::State()
 	GyroVal[0] = mGyroSensor.getAnglerVelocity();							/* ジャイロ値取得			*/
 	GyroValTotal = (GyroValTotal / SEESAW_GYRO_SAMPUL);
 
-	if (GyroValTotal > SEESAW_GYRO_VAL)
+	if (   (GyroValTotal < - SEESAW_GYRO_VAL)
+		|| (GyroValTotal >	SEESAW_GYRO_VAL))
 	{
 		SeesawDistance = mOdmetry->getX();									/* シーソー位置X座標ラッチ	*/
 		SeesawPosition = SEESAW_ALLIVAL;
 		SeesawRunMode  = SEESAW_ADVANCE;
 	}
-	else if (GyroValTotal <= (SEESAW_GYRO_VAL / 4))
+	else if (  (GyroValTotal <= (SEESAW_GYRO_VAL / 4))
+			&& (GyroValTotal >= (-(SEESAW_GYRO_VAL / 4))))
 	{
 		SeesawPosition = SEESAW_GO_ON;
 	}
@@ -143,18 +149,20 @@ void Seesaw::Run_Manage()
 */
 void Seesaw::Run_Advance()
 {
+	static unsigned short FreeTimer;
+
 	int16_t now_distance = mOdmetry->getX();								/* X座標位置取得			*/
 
 	if (SeesawPosition == SEESAW_ALLIVAL)
 	{
 		mBalancingWalker->setCommand(-60, 0);
 		ev3_led_set_color(LED_ORANGE); 										/* 通常走行は橙				*/
-		mTailMotor->setAngle(0);											/* シーソー走行時 尻尾0°	*/
+		mTailMotor->setAngle(100);											/* シーソー走行時 尻尾0°	*/
 
 		StayTimer = 0;
 	}
 	else if (  (SeesawPosition == SEESAW_GO_ON)
-			&& (now_distance > SeesawDistance))
+			&& (now_distance >= SeesawDistance))
 	{
 		if (   ((now_distance - SeesawDistance) > SEESAW_DISTANCE_ONE)			/* シーソー位置判定			*/
 			&& ((now_distance - SeesawDistance) < SEESAW_DISTANCE_LAST))
@@ -164,10 +172,9 @@ void Seesaw::Run_Advance()
 
 			ev3_led_set_color(LED_RED); 										/* 通常走行は赤				*/
 		}
-		else if ((now_distance - SeesawDistance) > SEESAW_DISTANCE_LAST)		/* シーソー位置判定			*/
+
+		if ((now_distance - SeesawDistance) > SEESAW_DISTANCE_LAST)			/* シーソー位置判定			*/
 		{
-			mBalancingWalker->setCommand(100, 0);
-			ev3_led_set_color(LED_GREEN); 										/* 通常走行は赤				*/
 			SeesawRunMode = SEESAW_BRAKE;
 		}
 		else
@@ -177,7 +184,7 @@ void Seesaw::Run_Advance()
 	}
 	else
 	{
-		if (StayTimer < (2000 / 4))
+		if (StayTimer < (4000 / 4))
 		{
 			mBalancingWalker->setCommand(80, 0);
 		}
@@ -188,6 +195,8 @@ void Seesaw::Run_Advance()
 
 		StayTimer++;
 	}
+
+	FreeTimer++;
 }
 
 
@@ -203,17 +212,29 @@ void Seesaw::Run_Advance()
 */
 void Seesaw::Run_Brake()
 {
-	if (BrakeTimer < (3000 / 4))
+	static unsigned char InitFlag;
+
+	int16_t now_distance = mOdmetry->getX();								/* X座標位置取得			*/
+	mGyroSensor.setOffset(-15);
+
+	if (InitFlag == 0)
 	{
-		mBalancingWalker->setCommand(100, 0);
+		if ((now_distance - SeesawDistance) > (SEESAW_DISTANCE_END - 5))
+		{
+			balance_init();
+			mRightWheel.setPWM(0);
+			mLeftWheel.setPWM(0);
+
+			mBalancingWalker->setCommand(0, SeesawDirection);
+			InitFlag = 1;
 	}
 	else
 	{
-		mBalancingWalker->setCommand(0, 0);
-		mTailMotor->setAngle(89);											/* シーソー走行時 尻尾89°	*/
+			mBalancingWalker->setCommand(5, SeesawDirection);
+		}
 	}
 
-	BrakeTimer++;
+	mTailMotor->setAngle(80);										/* シーソー走行時 尻尾0°	*/
 }
 
 
@@ -229,8 +250,7 @@ void Seesaw::Run_Brake()
 */
 void Seesaw::Run_Back()
 {
-	mTailMotor->setAngle(0);												/* シーソー進入時 尻尾0°	*/
-	mGyroSensor.setOffset(0);												/* ジャイロオフセット変更	*/
+	mBalancingWalker->setCommand(-50, 0);
 }
 
 

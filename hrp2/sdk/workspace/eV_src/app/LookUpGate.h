@@ -78,6 +78,8 @@ private:
 	char mThruGateSts;
 	char mBackGateSts;	// 後退ステートマシン
 	
+#define STANDTCOUNT	(250)
+	
 #define BACK_STRAIGHT
 //#undef BACK_STRAIGHT
 

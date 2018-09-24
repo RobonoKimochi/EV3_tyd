@@ -3,7 +3,7 @@
 
 // テストコース時はTEST_COURSEを「１」 に、本番時は「０」にしてください。
 #define TEST_COURSE (1)
-//#define RUN_COURSE RUN_RIGHT_COURSE
+#define RUN_COURSE RUN_RIGHT_COURSE
 
 // 次のゾーンに入ったかを判断する際に、コース形状を考慮に入れるかを選択する。
 #define CHECK_COURSE(x) (line == (x))
@@ -41,13 +41,14 @@
 #define ZONE2_LEN 78
 #define ZONE3_LEN 78
 #define ZONE4_LEN 41
-#define ZONE5_LEN 48
+#define ZONE5_LEN 43 //48
 #define ZONE6_LEN 34
-#define ZONE7_LEN 52
-#define ZONE8_LEN 50
-#define ZONE9_LEN 50
-#define ZONE10_LEN 257
-#define ZONE11_LEN 30
+#define ZONE7_LEN 40 // 52
+#define ZONE8_LEN 45 //50
+#define ZONE9_LEN 45 //50
+#define ZONE10_LEN 240 //257
+#define ZONE11_LEN 40 //48
+#define ZONE12_LEN 40 //48
 #define GRAY_LEN  13
 
 #elif RUN_COURSE == RUN_RIGHT_COURSE && !TEST_COURSE
@@ -249,8 +250,9 @@ RunManager::Section RunManager::determineCourse(){
         return STRAIGHT_ZONE;
 
     case ZONE5:
-        if((dist > ZONE5_LEN && line == LEFT_CURVE)) {
-//       	if((dist > ZONE5_LEN && CHECK_COURSE(RIGHT_CURVE))) {
+        if(dist > ZONE5_LEN && line == STRAIGHT) {
+//      if(dist > ZONE5_LEN && line == LEFT_CURVE) {
+//       	if(dist > ZONE5_LEN && CHECK_COURSE(RIGHT_CURVE)) {
             mZone = ZONE6;
             setOrigin();
 //            mSound->ready();
@@ -261,7 +263,7 @@ RunManager::Section RunManager::determineCourse(){
         if(dist > ZONE6_LEN && CHECK_COURSE(STRAIGHT)) {
             mZone = ZONE7;
             setOrigin();
-            mSound->ok();
+            //mSound->ok();
         }
         return TIGHT_CURVE_ZONE;
 
@@ -278,7 +280,7 @@ RunManager::Section RunManager::determineCourse(){
         if(dist > ZONE8_LEN && CHECK_COURSE(RIGHT_CURVE)) {
             mZone = ZONE9;
             setOrigin();
-            mSound->ready();
+            //mSound->ready();
         }
         return TIGHT_CURVE_ZONE;
 
@@ -286,7 +288,7 @@ RunManager::Section RunManager::determineCourse(){
         if(dist > ZONE9_LEN && CHECK_COURSE(STRAIGHT)) {
             mZone = ZONE10;
             setOrigin();
-            mSound->ready();
+            //mSound->ready();
         }
         return TIGHT_CURVE_ZONE;
 
@@ -295,20 +297,21 @@ RunManager::Section RunManager::determineCourse(){
 //       	if(dist > ZONE10_LEN && CHECK_COURSE(LEFT_CURVE)) {
             mZone = ZONE11;
             setOrigin();
-            mSound->ready();
+            mSound->ok();
         }
         return STRAIGHT_ZONE;
 
     case ZONE11:
-        if(CHECK_COURSE(LEFT_CURVE)) {
+        if(dist > ZONE11_LEN && CHECK_COURSE(STRAIGHT)) {
             mZone = ZONE12;
             setOrigin();
-            mSound->ready();
+            mSound->ok();
+            //return FINISHED;
         }
         return TIGHT_CURVE_ZONE;
 
     case ZONE12:
-        if(dist > ZONE11_LEN) {
+        if(dist > ZONE12_LEN) {
             mZone = ZONE13;
             setOrigin();
             mSound->ready();

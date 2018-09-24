@@ -464,13 +464,34 @@ void LookUpGate::BackLookUpGate(){
 #endif
 
 void LookUpGate::Stand(){
+	static int s_count;
+	static char s_dir;
 	
 	//mbalancingwalker->SettleMode(); //★★★前倒防止制御仮 うまくいくかわからない
 
-	    mRightWheel.setPWM(-2);
-        mLeftWheel.setPWM(-2);
-	StandCompleteFlag = mAttitudeControl->Stand();
+	// 前後にゆらす。起き上がりトルク補助対策
+	if(s_dir == 0)
+	{
+	    mRightWheel.setPWM(-10);
+        mLeftWheel.setPWM(-10);
+    }
+    else
+    {
+	    mRightWheel.setPWM(12);
+        mLeftWheel.setPWM(12);
+	}
 	
+	s_count ++;
+
+	if(s_count >= STANDTCOUNT)
+	{
+		s_count = 0;
+		
+		s_dir = (s_dir == 0) ? 1 : 0;
+	}
+	
+	StandCompleteFlag = mAttitudeControl->Stand();
+		
 	#if(0)
 	if((vib_count % 2) == 0) {
     	mRightWheel.setPWM(-1);
@@ -492,11 +513,12 @@ void LookUpGate::StartBalance(){
 	
 //	mAttitudeControl->ReStartBalance();
 	
-//	    mRightWheel.setPWM(0);
-//        mLeftWheel.setPWM(0);
+	    mRightWheel.setPWM(0);
+        mLeftWheel.setPWM(0);
 
-	mbalancingwalker->setCommand( 5, 0 ) ;
-	mbalancingwalker->run();	// OKか？
+
+//	mbalancingwalker->setCommand( 5, 0 ) ;
+//	mbalancingwalker->run();	// OKか？
 
 	LookUpCompFlag = true;
 	return;
