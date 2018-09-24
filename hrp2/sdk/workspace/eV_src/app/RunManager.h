@@ -41,7 +41,8 @@ public:
         ZONE9,
         ZONE10,
         ZONE11,
-        ZONE12
+        ZONE12,
+		ZONE13
     };
     void setOrigin();               // 距離を測る時の原点を設定する
     float getDistanceFromOrigin();  // 原点からの距離を測定する

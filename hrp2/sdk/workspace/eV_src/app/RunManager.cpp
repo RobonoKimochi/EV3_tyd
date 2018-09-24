@@ -47,7 +47,7 @@
 #define ZONE8_LEN 50
 #define ZONE9_LEN 50
 #define ZONE10_LEN 257
-#define ZONE11_LEN 48
+#define ZONE11_LEN 30
 #define GRAY_LEN  13
 
 #elif RUN_COURSE == RUN_RIGHT_COURSE && !TEST_COURSE
@@ -304,9 +304,19 @@ RunManager::Section RunManager::determineCourse(){
             mZone = ZONE12;
             setOrigin();
             mSound->ready();
-            return FINISHED;
         }
         return TIGHT_CURVE_ZONE;
+
+    case ZONE12:
+        if(dist > ZONE11_LEN) {
+            mZone = ZONE13;
+            setOrigin();
+            mSound->ready();
+        }
+        return SLOW;
+
+    case ZONE13:
+    	return FINISHED;
 
     default:
         return SECTION_ERROR;
