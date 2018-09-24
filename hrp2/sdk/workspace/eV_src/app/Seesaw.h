@@ -32,10 +32,10 @@
 #define SEESAW_BACK 		   (0xA5)						/* シーソー後退走行 				*/
 #define SEESAW_BRAKE		   (0xFF)						/* シーソーブレーキ 				*/
 
-#define SEESAW_DISTANCE_ONE    (2 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
-#define SEESAW_DISTANCE_DUBLE  (30 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
-#define SEESAW_DISTANCE_LAST   (43 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
-#define SEESAW_DISTANCE_END    (57 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
+#define SEESAW_DISTANCE_ONE    (10 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
+#define SEESAW_DISTANCE_DUBLE  (45 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
+#define SEESAW_DISTANCE_LAST   (50 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
+#define SEESAW_DISTANCE_END    (60.5 / 0.95)				/* [LSB cm]シーソー制御切り替え位置 */
 
 #define SEESAW_GYRO_VAL 	   (180)						/* シーソー制御ジャイロ値			*/
 #define SEESAW_GYRO_SAMPUL	   (10)							/* ジャイロ値サンプル数 			*/
@@ -81,9 +81,8 @@ class Seesaw
 		unsigned char SeesawRunMode;						/* 走行モード					*/
 		int16_t GyroVal[SEESAW_GYRO_SAMPUL];				/* ジャイロセンサ値				*/
 		int16_t GyroValTotal;								/* ジャイロセンサ積算値			*/
-		int StayTimer;
-		unsigned short FreeTimer;
-		unsigned short BrakeTimer;
+		int StayTimer;										/* 通常走行停止タイマ			*/
+		unsigned char InitFlag;								/* 初期化設定フラグ 			*/
 };
 
 
