@@ -61,7 +61,6 @@ void LineTracer::run() {
      	}
 #endif
 
-    	//direction = 0;
 #if 1 /* ターン値ガード */
 
     	if (direction > TURN_GUARD) {
@@ -94,27 +93,33 @@ void LineTracer::run() {
 
 #else
     if( mSection == RunManager::STRAIGHT_ZONE){
-    	mPidController->setPID(0.1, 0, 14);//うまくいってる
-        mBalancingWalker->setCommand(100, direction);	//■■速度は暫定
+    	mPidController->setPID(0.2, 0, 9.0);
+        mBalancingWalker->setCommand(CONSTANT_FORWARD_VAL, direction);
         mBalancingWalker->run();
     }else if(mSection == RunManager::CURB_ZONE){
 /* PID CURB_ZONE test */
 /* P 初期値:0.5   前回：0.8  今回：0.7       */
 /* I 初期値:0     前回：0    今回：0        */
 /* D 初期値:10    前回：10   今回：12       */
-    	mPidController->setPID(0.7, 0, 12.0);
-        mBalancingWalker->setCommand(100, direction);	//■■速度は暫定
+    	mPidController->setPID(0.42, 0, 12.0);
+        mBalancingWalker->setCommand(CONSTANT_FORWARD_VAL, direction);
+        mBalancingWalker->run();
+    }else if(mSection == RunManager::LOOSE_CURVE_ZONE){
+    	mPidController->setPID(0.39, 0, 20.0);
+        mBalancingWalker->setCommand(CONSTANT_FORWARD_VAL, direction);
+        mBalancingWalker->run();
+    }else if(mSection == RunManager::TIGHT_CURVE_ZONE){
+    	mPidController->setPID(0.57, 0, 20.0);
+        mBalancingWalker->setCommand(CONSTANT_FORWARD_VAL, direction);
         mBalancingWalker->run();
     }else if( mSection == RunManager::FINISHED){
         mIsFinished = true;
     	mLineMonitor->LineThresholdGray();
-        mBalancingWalker->setCommand(20, direction);	//■■速度は暫定
-        mBalancingWalker->run();
-    }else if( mSection == RunManager::GRAY){
-    //    while(1);
+    	mPidController->setPID(0.4, 0, 40.0);
         mBalancingWalker->setCommand(20, direction);	//■■速度は暫定
         mBalancingWalker->run();
     }
+
 #endif
 
     // アイデア②→LineTracer内でスタートから車庫まで（ソース管理が難しい?）

@@ -17,7 +17,7 @@
 #define ZONE4_LEN 56
 #define ZONE5_LEN 52
 #define ZONE6_LEN 59
-#define ZONE7_LEN 248
+#define ZONE7_LEN 228
 #define ZONE8_LEN 55
 #define ZONE9_LEN 52
 #define GRAY_LEN  13
@@ -37,15 +37,15 @@
 
 #elif RUN_COURSE == RUN_RIGHT_COURSE && TEST_COURSE
 // テスト Rコース
-#define ZONE1_LEN 210
-#define ZONE2_LEN 81
-#define ZONE3_LEN 81
-#define ZONE4_LEN 43
-#define ZONE5_LEN 55
-#define ZONE6_LEN 55
-#define ZONE7_LEN 65
-#define ZONE8_LEN 53
-#define ZONE9_LEN 53
+#define ZONE1_LEN 215
+#define ZONE2_LEN 78
+#define ZONE3_LEN 78
+#define ZONE4_LEN 41
+#define ZONE5_LEN 48
+#define ZONE6_LEN 34
+#define ZONE7_LEN 52
+#define ZONE8_LEN 50
+#define ZONE9_LEN 50
 #define ZONE10_LEN 257
 #define ZONE11_LEN 48
 #define GRAY_LEN  13
@@ -113,10 +113,11 @@ RunManager::Section RunManager::determineCourse() {
         return STRAIGHT_ZONE;
 
     case ZONE1:
-        if(dist > ZONE1_LEN && CHECK_COURSE(LEFT_CURVE)) {
+        if(dist > ZONE1_LEN) {
+//        if(dist > ZONE1_LEN && CHECK_COURSE(LEFT_CURVE)) {
             mZone = ZONE2;
             setOrigin();
-            mSound->ok();
+//            mSound->ok();
         }
         return STRAIGHT_ZONE;
 
@@ -124,15 +125,16 @@ RunManager::Section RunManager::determineCourse() {
         if(dist > ZONE2_LEN && CHECK_COURSE(STRAIGHT)) {
             mZone = ZONE3;
             setOrigin();
-            mSound->ok();
+//            mSound->ok();
         }
         return LOOSE_CURVE_ZONE;
 
     case ZONE3:
-        if(dist > ZONE3_LEN && CHECK_COURSE(RIGHT_CURVE)) {
+        if(dist > ZONE3_LEN) {
+//       	if(dist > ZONE3_LEN && CHECK_COURSE(RIGHT_CURVE)) {
             mZone = ZONE4;
             setOrigin();
-            mSound->ok();
+//            mSound->ok();
         }
         return STRAIGHT_ZONE;
 
@@ -140,15 +142,16 @@ RunManager::Section RunManager::determineCourse() {
         if(dist > ZONE4_LEN && CHECK_COURSE(STRAIGHT)) {
             mZone = ZONE5;
             setOrigin();
-            mSound->ok();
+//            mSound->ok();
         }
         return TIGHT_CURVE_ZONE;
 
     case ZONE5:
-        if(dist > ZONE5_LEN && CHECK_COURSE(RIGHT_CURVE)) {
+        if(dist > ZONE5_LEN) {
+//       	if(dist > ZONE5_LEN && CHECK_COURSE(RIGHT_CURVE)) {
             mZone = ZONE6;
             setOrigin();
-            mSound->ok();
+//            mSound->ok();
         }
         return STRAIGHT_ZONE;
 
@@ -156,29 +159,30 @@ RunManager::Section RunManager::determineCourse() {
         if(dist > ZONE6_LEN && CHECK_COURSE(STRAIGHT)) {
             mZone = ZONE7;
             setOrigin();
-            mSound->ok();
+//            mSound->ok();
         }
         return TIGHT_CURVE_ZONE;
 
     case ZONE7:
-        if(dist > ZONE7_LEN && CHECK_COURSE(LEFT_CURVE)) {
+        if(dist > ZONE7_LEN) {
+//       	if(dist > ZONE7_LEN && CHECK_COURSE(LEFT_CURVE)) {
             mZone = ZONE8;
             setOrigin();
-            mSound->ok();
+//            mSound->ok();
         }
         return STRAIGHT_ZONE;
 
     case ZONE8:
-        if(dist > ZONE8_LEN && CHECK_COURSE(STRAIGHT)) {
-            mZone = ZONE7;
+        if(CHECK_COURSE(LEFT_CURVE)) {
             setOrigin();
-            mSound->ok();
+//            mSound->ok();
+            mZone = ZONE9;
         }
         return TIGHT_CURVE_ZONE;
 
     case ZONE9:
-        return (dist < GRAY_LEN) ? GRAY : STRAIGHT_ZONE;
 
+        return FINISHED;
     default:
         return SECTION_ERROR;
     }
@@ -202,10 +206,11 @@ RunManager::Section RunManager::determineCourse(){
         return STRAIGHT_ZONE;
 
     case ZONE1:
-        if(dist > ZONE1_LEN && CHECK_COURSE(LEFT_CURVE)) {
+        if(dist > ZONE1_LEN) {
+//       	if(dist > ZONE1_LEN && CHECK_COURSE(LEFT_CURVE)) {
             mZone = ZONE2;
             setOrigin();
-            mSound->ok();
+//            mSound->ok();
         }
         return STRAIGHT_ZONE;
 
@@ -213,31 +218,35 @@ RunManager::Section RunManager::determineCourse(){
         if(dist > ZONE2_LEN && CHECK_COURSE(LEFT_CURVE)) {
             mZone = ZONE3;
             setOrigin();
-            mSound->ok();
+            //mSound->ok();
         }
         return LOOSE_CURVE_ZONE;
 
     case ZONE3:
-        if(dist > ZONE3_LEN && CHECK_COURSE(STRAIGHT)){
+    	if(dist > ZONE3_LEN){
+//        if(dist > ZONE3_LEN && CHECK_COURSE(STRAIGHT)){
             mZone = ZONE4;
             setOrigin();
-            mSound->ok();
+ //           mSound->ok();
         }
         return LOOSE_CURVE_ZONE;
 
     case ZONE4:
-        if(dist > ZONE4_LEN && CHECK_COURSE(LEFT_CURVE)) {
+        if(dist > ZONE4_LEN) {
+//       	if(dist > ZONE4_LEN && CHECK_COURSE(LEFT_CURVE)) {
             mZone = ZONE5;
             setOrigin();
-            mSound->ok();
+//            mSound->ready();
         }
+//        return STRAIGHT_ZONE;
         return STRAIGHT_ZONE;
 
     case ZONE5:
-        if((dist > ZONE5_LEN && CHECK_COURSE(RIGHT_CURVE))) {
+        if((dist > ZONE5_LEN && line == LEFT_CURVE)) {
+//       	if((dist > ZONE5_LEN && CHECK_COURSE(RIGHT_CURVE))) {
             mZone = ZONE6;
             setOrigin();
-            mSound->ok();
+//            mSound->ready();
         }
         return TIGHT_CURVE_ZONE;
 
@@ -250,7 +259,8 @@ RunManager::Section RunManager::determineCourse(){
         return TIGHT_CURVE_ZONE;
 
     case ZONE7:
-        if(dist > ZONE7_LEN && CHECK_COURSE(RIGHT_CURVE)) {
+        if(dist > ZONE7_LEN) {
+//       	if(dist > ZONE7_LEN && CHECK_COURSE(RIGHT_CURVE)) {
             mZone = ZONE8;
             setOrigin();
             mSound->ok();
@@ -261,7 +271,7 @@ RunManager::Section RunManager::determineCourse(){
         if(dist > ZONE8_LEN && CHECK_COURSE(RIGHT_CURVE)) {
             mZone = ZONE9;
             setOrigin();
-            mSound->ok();
+            mSound->ready();
         }
         return TIGHT_CURVE_ZONE;
 
@@ -269,28 +279,27 @@ RunManager::Section RunManager::determineCourse(){
         if(dist > ZONE9_LEN && CHECK_COURSE(STRAIGHT)) {
             mZone = ZONE10;
             setOrigin();
-            mSound->ok();
+            mSound->ready();
         }
         return TIGHT_CURVE_ZONE;
 
     case ZONE10:
-        if(dist > ZONE10_LEN && CHECK_COURSE(LEFT_CURVE)) {
+        if(dist > ZONE10_LEN) {
+//       	if(dist > ZONE10_LEN && CHECK_COURSE(LEFT_CURVE)) {
             mZone = ZONE11;
             setOrigin();
-            mSound->ok();
+            mSound->ready();
         }
         return STRAIGHT_ZONE;
 
     case ZONE11:
-        if(dist > ZONE11_LEN && CHECK_COURSE(STRAIGHT)) {
+        if(CHECK_COURSE(LEFT_CURVE)) {
             mZone = ZONE12;
             setOrigin();
-            mSound->ok();
+            mSound->ready();
+            return FINISHED;
         }
         return TIGHT_CURVE_ZONE;
-
-    case ZONE12:
-        return (dist < GRAY_LEN) ? GRAY : STRAIGHT_ZONE;
 
     default:
         return SECTION_ERROR;
