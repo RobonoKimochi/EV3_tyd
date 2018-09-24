@@ -296,7 +296,7 @@ RunManager::Section RunManager::determineCourse(){
       	if(dist > ZONE10_LEN) { /// && CHECK_COURSE(LEFT_CURVE)) {
             mZone = ZONE11;
             setOrigin();
-            mSound->ok();
+            //mSound->ok();
         }
         return STRAIGHT_ZONE;
 
@@ -312,7 +312,7 @@ RunManager::Section RunManager::determineCourse(){
         if(dist > ZONE12_LEN) {
             mZone = ZONE13;
             setOrigin();
-            mSound->ready();
+            mSound->ok();
         }
         return SLOW;
 
