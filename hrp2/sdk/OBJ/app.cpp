@@ -106,7 +106,7 @@ static void user_system_create() {
 	gTailMotor		= TailMotor::getInstance();
 	gSound 			= Sound::getInstance();
 	gClock			 = new Clock();
-	gSeesaw		 			= new Seesaw(gAttitudeControl, gBalancingWalker, gLineTracer, gPidController, gLineMonitor, gGyroSensor, gOdmetry);
+	gSeesaw		 			= new Seesaw(gAttitudeControl, gBalancingWalker, gLineTracer, gPidController, gLineMonitor, gGyroSensor, gOdmetry, gColorSensor);
 	gLineTracerWithStarter 	= new LineTracerWithStarter(gLineTracer, gStarter, gCalibration, gRemote, gLookUpGate , gMeasureDistance, gGarage, gBalancingWalker, gSeesaw);
 
 	// 初期化完了通知

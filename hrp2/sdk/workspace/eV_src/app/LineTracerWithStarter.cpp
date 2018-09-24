@@ -258,6 +258,9 @@ void LineTracerWithStarter::execWalking() {
             mState = SEESAW;
 #elif RUN_COURSE == RUN_LEFT_COURSE
         if( mLineTracer->isFinished() == true && mMeasureDistance->DetectGate() == true){
+
+			mGarage->SetStartPoint();	// ガレージ距離処理
+			
             mState = LOOKUPGATE;
 #endif
 		}

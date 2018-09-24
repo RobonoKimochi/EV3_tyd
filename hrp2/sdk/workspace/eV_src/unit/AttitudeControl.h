@@ -28,14 +28,17 @@ private:
 	SettleState mSettleState;
 
 	const float TailPGainSettle = 0.8F;
-	const float TailPGainLean = 2.0F;
-	const float TailIGainLean = 1.0F;
+//	const float TailPGainLean = 2.0F;
+	const float TailPGainLean = 3.0F;
+//	const float TailIGainLean = 1.0F;
+	const float TailIGainLean = 3.0F;	// 0924 増やす（目標までいけない対策）
 	
 	const float TailPGainStand = 6.0F;
 	const float TailIGainStand = 6.0F;
 	const float TailPGainBalance = 1.0F;
 	const int TailAngleSettle = 80;
-	const int TailAngleLean = 57;		// 2018_0922 61から変更松原
+//	const int TailAngleLean = 57;		// 2018_0922 61から変更松原
+	const int TailAngleLean = 54;		// 2018_0924 57から変更松原
 //	const int TailAngleStand = 83;
 	const int TailAngleStand = 71;
 	const int TailAngleBalance = 1;

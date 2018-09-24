@@ -26,6 +26,9 @@ class Garage
 				LineTracer* lineTracer,
 				PidController* pidController,
 				LineMonitor* lineMonitor);
+				
+		void SetStartPoint();
+
 
 		/**
 		* @brief 			状態に対応した処理を実行。
@@ -108,5 +111,13 @@ class Garage
     	float            mGaragePoint;		// 停止距離
     	int32_t          mAdjustSpeed;		// 調整時の移動速度
     	State            mState;			// 状態変数
+    	
+#define GOAL_DISTANCE				(80)
+#define LOOKUP_GATEDETECT_DISTANCE	(2)
+#define WHEEL_R						(5)
+#define MARGIN						(17)
+
+    	
+#define LINETRACE_DISTANCE	(30 + 2)
 };
 #endif  // EV3_APP_LINETRACER_H_

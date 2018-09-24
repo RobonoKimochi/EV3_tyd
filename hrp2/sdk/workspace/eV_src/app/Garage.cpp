@@ -14,7 +14,8 @@ Garage::Garage(	BalancingWalker* balancingWalker,
     	mLineMonitor( lineMonitor ),
     	mTailAngle( 80 ),			// 尻尾目標角度80°
     	mForward( 5 ),				// PID制御値
-    	mGaragePoint( 40 ),			// 停止させる地点までの距離
+//    	mGaragePoint( 40 ),			// 停止させる地点までの距離
+    	mGaragePoint( GOAL_DISTANCE + LOOKUP_GATEDETECT_DISTANCE - WHEEL_R + MARGIN ),			// 停止させる地点までの距離
     	mAdjustSpeed( -1 ),			// 調整時の移動速度
     	mState( INIT )				// 初期状態
     	{
@@ -49,6 +50,11 @@ void Garage::StateGarage()
 	}
 }
 
+void Garage::SetStartPoint()
+{
+	mRunManager->setOrigin();					// 原点を設定（停止地点までの距離判断に使用）
+}
+
 /**
 * @brief 			初期化処理
 *
@@ -61,9 +67,14 @@ void Garage::StateGarage()
 */
 void Garage::Initialize()
 {
-	mRunManager->setOrigin();					// 原点を設定（停止地点までの距離判断に使用）
+//	mRunManager->setOrigin();					// 原点を設定（停止地点までの距離判断に使用）
 
-	mLineMonitor->setLineThreshold( 10 );
+//	mLineMonitor->setLineThreshold( (15 + 40) / 2 );
+//	mLineMonitor->setLineThreshold( (8 + 40) / 2 );
+//	mLineMonitor->setLineThreshold( (25 + 40) / 2 );
+
+//	mLineMonitor->setLineThreshold( 35 );
+	mLineMonitor->LeanModecalLineThreshold();
 
 	mPidController->setPID( 2, 0, 5 );
 
@@ -82,13 +93,36 @@ void Garage::Initialize()
 */
 void Garage::GoToGarage()
 {
+	char buf[255];
+	float s_dist;
+	
+	s_dist = mRunManager->getDistanceFromOrigin();
+	
+	sprintf( buf, "dist = %.2f", s_dist);          // 光センサ値を表示
+	ev3_lcd_draw_string( buf, 0, 70);
+
+	
 	if( mRunManager->getDistanceFromOrigin() <= mGaragePoint )	// 停止地点まで進んでない？
 	{
-		// 決め打ちの値（黒：0、白：10、トレース値：5）でPID制御をさせる
-		// 右車輪にはmForward(決め打ちの前進値）から現在のカラーセンサ値とライン閾値の差分を引いた値。
-		// 左車輪にはmForward（決め打ちの前進値）から現在のカラーセンサ値とライン閾値の差分を加えた値。
-		mRightWheel.setPWM( mForward - 0.2 * mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()) );
-		mLeftWheel.setPWM( mForward + 0.2 * mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()) );
+		if ( s_dist < LINETRACE_DISTANCE)
+		{
+			// 決め打ちの値（黒：0、白：10、トレース値：5）でPID制御をさせる
+			// 右車輪にはmForward(決め打ちの前進値）から現在のカラーセンサ値とライン閾値の差分を引いた値。
+			// 左車輪にはmForward（決め打ちの前進値）から現在のカラーセンサ値とライン閾値の差分を加えた値。
+			
+			ev3_led_set_color(LED_ORANGE);
+
+			mRightWheel.setPWM( mForward - 0.2 * mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()) );
+			mLeftWheel.setPWM( mForward + 0.2 * mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()) );
+		}
+		else
+		{
+			// ライントレースせずに前進する（灰色対策、暫定）
+			mRightWheel.setPWM( 10 );
+			mLeftWheel.setPWM( 10 );
+			
+			ev3_led_set_color(LED_RED);
+		}
 	}
 	else	// 停止距離まで通過
 	{
@@ -116,6 +150,8 @@ void Garage::Adjust()
 	mLeftWheel.setBrake( false );	// 左車輪ブレーキ状態
 
 //	mTailMotor->setAngle( mTailMotor->getAngle() + 0 );	// 走行体の傾きを緩やかにする
+
+	ev3_led_set_color(LED_GREEN);
 
 	mState = STOP;					// 状態遷移：停止
 }

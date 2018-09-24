@@ -167,19 +167,9 @@ void LineTracer::runWithoutBalancing() {
 }
 
 bool LineTracer::detectGray() {
-	mLineMonitor->LineThresholdGray();
+	
+	return true;
 
-//	mRightWheel.setPWM(10 - mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()));
-//	mLeftWheel.setPWM(10 + mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()));
-
-	mRightWheel.setPWM(0);
-	mLeftWheel.setPWM(0);
-
-    if( mRunManager->detectGray() == true){
-        return true;
-    }else{
-        return false;
-    }
 }
 /**
  * 走行体の向きを計算する
@@ -202,8 +192,6 @@ bool LineTracer::isFinished() {
     }
 }
 /**
- * PIDのパラメータを設定する
- * @param kp P制御値
  * @param ki I制御値
  * @param kd D制御値
  */
