@@ -121,14 +121,15 @@ void LineTracer::run() {
         mIsFinished = true;
     	mLineMonitor->LineThresholdGray();
 #if RUN_COURSE == RUN_LEFT_COURSE
-    	mPidController->setPID(0.4, 0, 10.0);
-        mBalancingWalker->setCommand(50, direction);	//■■速度は暫定
+    	mPidController->setPID(1.0, 0, 10.0);
+        mBalancingWalker->setCommand(20, direction);	//■■速度は暫定
         mBalancingWalker->run();
 #endif
 
 #if RUN_COURSE == RUN_RIGHT_COURSE
     	mPidController->setPID(1.0, 0, 10.0);
         mBalancingWalker->setCommand(20, direction);	//■■速度は暫定
+        mBalancingWalker->run();
 #endif
     }
 
