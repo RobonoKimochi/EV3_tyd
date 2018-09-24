@@ -33,3 +33,10 @@
 
 #backup
 *.bak
+
+# OBJ directory
+hrp2/sdk/OBJ/
+
+#
+hrp2/cfg/cfg/cfg
+
