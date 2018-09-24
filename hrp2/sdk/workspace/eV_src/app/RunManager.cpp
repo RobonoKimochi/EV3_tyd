@@ -187,7 +187,7 @@ RunManager::Section RunManager::determineCourse() {
 //            mSound->ok();
             mZone = ZONE10;
         }
-        return SLOW;
+        return TIGHT_CURVE_ZONE;
 
     case ZONE10:
         return FINISHED;
