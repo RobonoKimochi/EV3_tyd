@@ -39,9 +39,9 @@
 	  mSeesaw(seesaw),
       mState(UNDEFINED),
       TimeCount(0),
-      mStartSignal(false),
       isGyroInit(false),
-      isTailInit(false)
+      isTailInit(false),
+      mStartSignal(false)
       {
 }
 
@@ -141,7 +141,7 @@ void LineTracerWithStarter::execCalibrationGyroAndTail() {
 	}
 
 	if(isTailInit == false && TimeCount > 100) {
-		mTailMotor->setAngle(94);	// 開始待ち時尻尾91°
+		mTailMotor->setAngle(92);	// 開始待ち時尻尾91°
         isTailInit = true;
 	}
 
