@@ -241,8 +241,6 @@ void LineTracerWithStarter::execWaitingForStart() {
         mTailMotor->setAngle(0);	// 開始時尻尾0°
 
         mState = WALKING;
-        // mState =STAIRS;
-
     }
 }
 
