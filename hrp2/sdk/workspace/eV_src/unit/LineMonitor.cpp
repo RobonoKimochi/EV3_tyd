@@ -78,7 +78,7 @@ void LineMonitor::LineThresholdGray() {
     int16_t  cal;
 
     cal = (mBlackThresh + mWhiteThresh) / 2;
-	cal = cal * 1.8;
+	cal = cal * 1.5;
     setLineThreshold(cal);
 }
 
