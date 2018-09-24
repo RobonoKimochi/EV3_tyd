@@ -120,7 +120,7 @@ void LineTracer::run() {
     }else if( mSection == RunManager::FINISHED){
         mIsFinished = true;
     	mLineMonitor->LineThresholdGray();
-    	mPidController->setPID(0.4, 0, 5.0);
+    	mPidController->setPID(1.0, 0, 10.0);
         mBalancingWalker->setCommand(20, direction);	//■■速度は暫定
         mBalancingWalker->run();
     }
