@@ -39,7 +39,9 @@
 	  mSeesaw(seesaw),
       mState(UNDEFINED),
       TimeCount(0),
-      mStartSignal(false)
+      mStartSignal(false),
+      isGyroInit(false),
+      isTailInit(false)
       {
 }
 
@@ -61,8 +63,11 @@ void LineTracerWithStarter::run() {
     case CALIBRATION_GYRO:
         execCalibrationGyro();
         break;
-   case CALIBRATION_TAIL:
+    case CALIBRATION_TAIL:
         execCalibrationTail();
+        break;
+    case CALIBRATION_TAIL_AND_GYRO:
+        execCalibrationGyroAndTail();
         break;
     case CALIBRATION_BLACK:
         execCalibrationBlack();
@@ -111,7 +116,39 @@ void LineTracerWithStarter::execUndefined() {
 #endif
 	mTailMotor->init(0);
     mCalibration->init();
-	mState = CALIBRATION_GYRO;
+	//mState = CALIBRATION_GYRO;
+    mState = CALIBRATION_TAIL_AND_GYRO;
+}
+
+void LineTracerWithStarter::execCalibrationGyroAndTail() {
+    
+    if (isGyroInit == false && mCalibration->calibrateGyro(mStarter->isPushed()) == true) {
+        isGyroInit = true;
+    }
+
+    if(mStarter->isPushed() == true) {
+		mTailMotor->setPWM(0);
+		mTailMotor->init(0);
+		TailInit = true;
+	}
+
+	if(TailInit == false) {
+		mTailMotor->setPWM(-2);
+	}
+
+	if(TailInit == true) {
+		TimeCount++;
+	}
+
+	if(isTailInit == false && TimeCount > 100) {
+		mTailMotor->setAngle(94);	// 開始待ち時尻尾91°
+        isTailInit = true;
+	}
+
+    if(isTailInit && isGyroInit) {
+        mSound->ok();
+        mState = CALIBRATION_BLACK;
+    }
 }
 
 /**

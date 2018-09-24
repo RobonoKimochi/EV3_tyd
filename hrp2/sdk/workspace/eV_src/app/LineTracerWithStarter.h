@@ -53,7 +53,8 @@ private:
     	LOOKUPGATE,
 		SEESAW,
     	GARAGE,
-        GRAY_DETECT
+        GRAY_DETECT,
+        CALIBRATION_TAIL_AND_GYRO
     };
 
     LineTracer* mLineTracer;
@@ -70,6 +71,8 @@ public:
     State mState;
 private:
 	int TimeCount;
+    bool isGyroInit;
+    bool isTailInit;
 
     void execUndefined();
 	void execCalibrationTail();
@@ -83,6 +86,7 @@ private:
 	void remote();
 	void execSeesaw() ;
     void execGrayDetect();
+    void execCalibrationGyroAndTail();
 
     TailMotor *mTailMotor = TailMotor::getInstance();
 public:

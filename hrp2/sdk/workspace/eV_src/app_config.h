@@ -15,7 +15,8 @@
 #define RUN_LEFT_COURSE	(1)
 #define RUN_RIGHT_COURSE	(2)
 
-#define RUN_COURSE (RUN_LEFT_COURSE) /* ←ここにコースを記載 */
+//#define RUN_COURSE (RUN_LEFT_COURSE) /* ←ここにコースを記載 */
+#define RUN_COURSE (RUN_RIGHT_COURSE)
 
 /* デバッグモード */
 /* 0:通常走行モード	1:デバッグ走行モード */

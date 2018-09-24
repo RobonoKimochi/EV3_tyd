@@ -3,7 +3,7 @@
 
 // テストコース時はTEST_COURSEを「１」 に、本番時は「０」にしてください。
 #define TEST_COURSE (1)
-#define RUN_COURSE RUN_RIGHT_COURSE
+//#define RUN_COURSE RUN_RIGHT_COURSE
 
 // 次のゾーンに入ったかを判断する際に、コース形状を考慮に入れるかを選択する。
 #define CHECK_COURSE(x) (line == (x))
@@ -46,9 +46,9 @@
 #define ZONE7_LEN 40 // 52
 #define ZONE8_LEN 45 //50
 #define ZONE9_LEN 45 //50
-#define ZONE10_LEN 240 //257
-#define ZONE11_LEN 40 //48
-#define ZONE12_LEN 40 //48
+#define ZONE10_LEN 230 //257
+#define ZONE11_LEN 30 //48
+#define ZONE12_LEN 10 //48
 #define GRAY_LEN  13
 
 #elif RUN_COURSE == RUN_RIGHT_COURSE && !TEST_COURSE
@@ -293,8 +293,7 @@ RunManager::Section RunManager::determineCourse(){
         return TIGHT_CURVE_ZONE;
 
     case ZONE10:
-        if(dist > ZONE10_LEN) {
-//       	if(dist > ZONE10_LEN && CHECK_COURSE(LEFT_CURVE)) {
+      	if(dist > ZONE10_LEN) { /// && CHECK_COURSE(LEFT_CURVE)) {
             mZone = ZONE11;
             setOrigin();
             mSound->ok();
@@ -302,11 +301,10 @@ RunManager::Section RunManager::determineCourse(){
         return STRAIGHT_ZONE;
 
     case ZONE11:
-        if(dist > ZONE11_LEN && CHECK_COURSE(STRAIGHT)) {
+        if(dist > ZONE11_LEN) {
             mZone = ZONE12;
             setOrigin();
-            mSound->ok();
-            //return FINISHED;
+            //mSound->ok();
         }
         return TIGHT_CURVE_ZONE;
 
