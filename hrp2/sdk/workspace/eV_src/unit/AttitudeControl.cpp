@@ -63,7 +63,10 @@ bool AttitudeControl::Lean(){
 	
 	mTailMotor->setTargetAngle( TailAngleLean );
 	mTailMotor->setPgain( TailPGainLean );
+	mTailMotor->setIgain( TailIGainLean );
+	
 	mTailMotor->setAngleSlow();
+
 	if(mTailMotor->CompleteDull() == true) {
 		CompleteFlag = true;
 	}
@@ -75,10 +78,11 @@ bool AttitudeControl::Stand(){
 
 	CompleteFlag = false;
 
-	mTailMotor->setTargetAngle(TailAngleStand);
 	mTailMotor->setPgain( TailPGainStand );
-	mTailMotor->setAngleSlow();
-	if(mTailMotor->CompleteDull() == true) {
+	mTailMotor->setIgain( TailIGainStand );
+	mTailMotor->setAngle(TailAngleStand);
+
+	if(mTailMotor->getAngle() >= TailAngleStand) {
 		CompleteFlag = true;
 	}
 
@@ -95,17 +99,10 @@ void AttitudeControl::KeepAttitude(){
 }
 
 void AttitudeControl::ReStartBalance(){
-
-	if(InitFlag == false) {
-		mbalancingwalker->init();
-		InitFlag =true;
-	}
 	
-	mTailMotor->setTargetAngle(TailAngleBalance);
-	mTailMotor->setPgain(TailPGainBalance);
-	mTailMotor->setAngleSlow();
 
-	mbalancingwalker->run();
+
+
 
 	return;
 }

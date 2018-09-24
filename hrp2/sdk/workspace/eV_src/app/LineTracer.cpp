@@ -168,8 +168,13 @@ void LineTracer::runWithoutBalancing() {
 
 bool LineTracer::detectGray() {
 	mLineMonitor->LineThresholdGray();
-	mRightWheel.setPWM(10 - mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()));
-	mLeftWheel.setPWM(10 + mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()));
+
+//	mRightWheel.setPWM(10 - mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()));
+//	mLeftWheel.setPWM(10 + mPidController->LeancalControlledVariable(mLineMonitor->getDeviation()));
+
+	mRightWheel.setPWM(0);
+	mLeftWheel.setPWM(0);
+
     if( mRunManager->detectGray() == true){
         return true;
     }else{
