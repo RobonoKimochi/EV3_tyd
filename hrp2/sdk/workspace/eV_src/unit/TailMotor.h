@@ -40,6 +40,7 @@ class TailMotor
  		* @detail 			テイルモータ制御の比例値の設定を行う。
  		*/
 		void setPgain( float p_gain );
+		void setIgain( float i_gain );
 
 		/**
 		* @brief			テイルモータの制御
@@ -75,6 +76,8 @@ class TailMotor
 		int32_t  mAngle;				// モーターの角度(°)
 	bool CompleteDull();
 	void  setTargetAngle();
+
+	
 	
 /**
 	* @brief			テイルモータの角度取得

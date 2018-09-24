@@ -19,7 +19,7 @@ public:
         CURB_ZONE,      // 走行区間
     	LOOSE_CURVE_ZONE,
     	TIGHT_CURVE_ZONE,
-        GRAY,
+        SLOW,
         FINISHED      // 走行区間終了
     };
     enum Line {
@@ -41,7 +41,8 @@ public:
         ZONE9,
         ZONE10,
         ZONE11,
-        ZONE12
+        ZONE12,
+		ZONE13
     };
     void setOrigin();               // 距離を測る時の原点を設定する
     float getDistanceFromOrigin();  // 原点からの距離を測定する

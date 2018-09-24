@@ -13,7 +13,8 @@ TailMotor::TailMotor()
 	  mPWM(0),
 	  mP_Gain(0.50F),
 	  mI_Gain(0.10F),
-	  PWM_MAX(60),
+//	  PWM_MAX(60),
+	  PWM_MAX(100),
 	  preTargetAngle(0),
 	  TimeCount(0),
       TargetAngle(0)
@@ -49,6 +50,13 @@ void TailMotor::init( int32_t offset )
 void TailMotor::setPgain( float p_gain )
 {
 	mP_Gain = p_gain;	// テールモータのオフセット値設定
+
+	return;				// 【戻り値】無し
+}
+
+void TailMotor::setIgain( float i_gain )
+{
+	mI_Gain = i_gain;	// テールモータのオフセット値設定
 
 	return;				// 【戻り値】無し
 }
@@ -211,6 +219,8 @@ bool TailMotor::CompleteDull(){
 	}
 	return(flag) ;
 }
+
+
 
 /**
  * @brief			テールモータの角度取得
