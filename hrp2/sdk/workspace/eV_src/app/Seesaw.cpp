@@ -230,8 +230,7 @@ void Seesaw::Run_Brake()
 	}
 	else
 	{
-			mBalancingWalker->setCommand(5, SeesawDirection);
-		}
+		mBalancingWalker->setCommand(5, SeesawDirection);
 	}
 
 	mTailMotor->setAngle(80);										/* シーソー走行時 尻尾0°	*/
