@@ -18,6 +18,7 @@
 #include "AttitudeControl.h"
 #include "PidController.h"
 #include "GyroSensor.h"
+#include "balancer.h"
 
 
 /* ---------------------------- */
@@ -31,14 +32,15 @@
 #define SEESAW_BACK 		   (0xA5)						/* シーソー後退走行 				*/
 #define SEESAW_BRAKE		   (0xFF)						/* シーソーブレーキ 				*/
 
-#define SEESAW_DISTANCE_ONE    (10 / 0.70)					/* [LSB cm]シーソー制御切り替え位置 */
-#define SEESAW_DISTANCE_DUBLE  (30 / 0.70)					/* [LSB cm]シーソー制御切り替え位置 */
-#define SEESAW_DISTANCE_LAST   (45 / 0.70)					/* [LSB cm]シーソー制御切り替え位置 */
-#define SEESAW_DISTANCE_END    (65 / 0.70)					/* [LSB cm]シーソー制御切り替え位置 */
+#define SEESAW_DISTANCE_ONE    (2 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
+#define SEESAW_DISTANCE_DUBLE  (30 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
+#define SEESAW_DISTANCE_LAST   (43 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
+#define SEESAW_DISTANCE_END    (57 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
 
 #define SEESAW_GYRO_VAL 	   (180)						/* シーソー制御ジャイロ値			*/
 #define SEESAW_GYRO_SAMPUL	   (10)							/* ジャイロ値サンプル数 			*/
 
+#define SEESAW_STOP_TIME	   (5000 / 4)					/* 停止時間				 			*/
 
 
 /* ---------------------------- */
@@ -49,7 +51,7 @@ class Seesaw
 	public:
 
 		Seesaw(AttitudeControl* attitudecontrol, BalancingWalker* balancingwalker, LineTracer* linetracer, PidController* pidController, \
-				LineMonitor* lineMonitor, ev3api::GyroSensor& gyroSensor, Odmetry* odmetry);
+				LineMonitor* lineMonitor, ev3api::GyroSensor& gyroSensor, Odmetry* odmetry, ev3api::ColorSensor& colorsensor);
 		~Seesaw();
 		void Initialize();									/* 初期化処理					*/
 		void State();										/* シーソー状態判定				*/
@@ -68,6 +70,8 @@ class Seesaw
 		LineMonitor*	 mLineMonitor;
 		ev3api::GyroSensor& mGyroSensor;
 		Odmetry*		 mOdmetry = Odmetry::getInstance();
+		ev3api::ColorSensor&	 mColorSensor;
+
 		ev3api::Motor mRightWheel = MotorDriver::getInstance().getRightWheel();
 		ev3api::Motor mLeftWheel = MotorDriver::getInstance().getLeftWheel();
 
@@ -78,7 +82,8 @@ class Seesaw
 		int16_t GyroVal[SEESAW_GYRO_SAMPUL];				/* ジャイロセンサ値				*/
 		int16_t GyroValTotal;								/* ジャイロセンサ積算値			*/
 		int StayTimer;
-		int BrakeTimer;
+		unsigned short FreeTimer;
+		unsigned short BrakeTimer;
 };
 
 
