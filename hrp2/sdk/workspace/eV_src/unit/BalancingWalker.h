@@ -12,6 +12,7 @@
 #include "GyroSensor.h"
 #include "Motor.h"
 #include "BalancerCpp.h"
+#include "Filter.h"
 
 class BalancingWalker {
 public:
@@ -34,12 +35,15 @@ public:
 	void GyroChange(int16_t angle);
 	int getLeftPwm();
 	int getRightPwm();
+	
+	float mGyroLpf;
 
 private:
     const ev3api::GyroSensor& mGyroSensor;
     ev3api::Motor& mLeftWheel;
     ev3api::Motor& mRightWheel;
     Balancer* mBalancer;
+    Filter * mFilter;
     int mForward;
     int mTurn;
     int mTimerFallDown;

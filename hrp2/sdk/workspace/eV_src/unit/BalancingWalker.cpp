@@ -31,7 +31,9 @@ BalancingWalker::BalancingWalker(const ev3api::GyroSensor& gyroSensor,
       mForward(0),
       mTurn(0),
       mTimerFallDown(0),
-      back_count(0){
+      back_count(0)
+      {
+        mFilter  = new Filter();
 }
 
 /**
@@ -62,6 +64,9 @@ void BalancingWalker::run() {
         mLeftWheel.setPWM(0);
         mRightWheel.setPWM(0);
     }
+    
+    // ジャイロローパス例
+   mGyroLpf = mFilter->LowPassFilter((float)angle);
 }
 
 /**
