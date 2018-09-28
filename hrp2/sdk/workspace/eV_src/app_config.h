@@ -30,7 +30,7 @@
 
 /* ロガー設定 */
 /* 0:ログ出力なし	1:ログ出力あり */
-#define USE_OUTPUT_LOG		(1)
+#define USE_OUTPUT_LOG		(0)
 
 
 /* ライントレースON */
@@ -40,7 +40,7 @@
 
 /* PID切り替え無効 */
 /* 0:PID切り替えあり	1:PID切り替え無し */
-#define USE_CONSTANT_PID		(1)
+#define USE_CONSTANT_PID		(0)
 
 
 /* FORWARD値設定 */
