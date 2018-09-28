@@ -37,7 +37,7 @@
 #define SEESAW_DISTANCE_THREE  (50 / 0.95)					/* [LSB cm]シーソー制御切り替え位置 */
 #define SEESAW_DISTANCE_END    (60.5 / 0.95)				/* [LSB cm]シーソー制御切り替え位置 */
 
-#define SEESAW_GYRO_VAL 	   (180)						/* シーソー制御ジャイロ値			*/
+#define SEESAW_GYRO_VAL 	   (120)						/* シーソー制御ジャイロ値			*/
 #define SEESAW_GYRO_SAMPUL	   (10)							/* ジャイロ値サンプル数 			*/
 
 #define SEESAW_STOP_TIME	   (5000 / 4)					/* 停止時間				 			*/
