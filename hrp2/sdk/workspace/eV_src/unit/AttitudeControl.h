@@ -38,7 +38,8 @@ private:
 	const float TailPGainBalance = 1.0F;
 	const int TailAngleSettle = 80;
 //	const int TailAngleLean = 57;		// 2018_0922 61から変更松原
-	const int TailAngleLean = 54;		// 2018_0924 57から変更松原
+//	const int TailAngleLean = 54;		// 2018_0924 57から変更松原
+	const int TailAngleLean = 60;		// 2018_0929 54から変更豊田
 //	const int TailAngleStand = 83;
 	const int TailAngleStand = 71;
 	const int TailAngleBalance = 1;
