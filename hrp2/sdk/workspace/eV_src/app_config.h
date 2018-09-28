@@ -30,7 +30,7 @@
 
 /* ロガー設定 */
 /* 0:ログ出力なし	1:ログ出力あり */
-#define USE_OUTPUT_LOG		(0)
+#define USE_OUTPUT_LOG		(1)
 
 
 /* ライントレースON */

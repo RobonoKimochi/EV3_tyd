@@ -220,7 +220,7 @@ void LineTracerWithStarter::execCalibrationWhite() {
 		ev3_lcd_draw_string("LeftEdge", 10, 50);
 #elif RUN_COURSE == RUN_RIGHT_COURSE
     	ev3_lcd_draw_string("RightCourse", 10, 30);
-		ev3_lcd_draw_string("RightEdge", 10, 50);
+		ev3_lcd_draw_string("LeftEdge", 10, 50);
 #endif
 		ev3_lcd_draw_string("READY", 60, 70);
         mSound->trumpet();
